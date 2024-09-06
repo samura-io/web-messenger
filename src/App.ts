@@ -1,6 +1,7 @@
 import Handlebars from 'handlebars/runtime';
-import greetings from './templates/greetings.hbs'
-import button from './partials/button.hbs'
+import button from './components/button/button.hbs'
+import main from './pages/main/main.hbs'
+import notFound from './pages/not-found/not-found.hbs'
 
 Handlebars.registerPartial('button', button);
 
@@ -9,32 +10,42 @@ export default class App {
     appElement: HTMLElement | null
     constructor() {
         this.state = {
-            currentPage: '',
+            currentPage: '/',
         }
         this.appElement = document.querySelector('#app')
     }
 
     render() {
-        if (!this.appElement) {
-            return;
-        };
+        if (!this.appElement) {return}
+        let template;
+        if (this.state.currentPage === '/') {
+            template = main({
+                title: 'Главная страница',
+                greetings: 'Никита'
+            })
+            this.appElement.innerHTML = template;
+        } else if (this.state.currentPage === '/not-found') {
+            template = notFound({});
+            this.appElement.innerHTML = template;
+        }
+        this.setEventListeners();
+    }
 
-        const result = greetings({
-            username: 'Nikita1',
+    setEventListeners() {
+        const button = document.querySelector('#button');
+        console.log(button);
+
+        button?.addEventListener('click', () => {
+            if (this.state.currentPage === '/') {
+                this.changePage('/not-found');
+            } else if (this.state.currentPage === '/not-found') {
+                this.changePage('/');
+            }
         })
-        
-        this.appElement.innerHTML = result;
-        
-        setTimeout(() => {
-            if (!this.appElement) {
-                return;
-            };
-            
-            this.appElement.innerHTML = greetings({
-                username: 'ЗАебался'
-            }) 
-        }, 3000);
+    }
 
-
+    changePage(path: string){
+        this.state.currentPage = path;
+        this.render();
     }
 }
