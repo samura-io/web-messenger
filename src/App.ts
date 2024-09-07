@@ -1,9 +1,13 @@
 import Handlebars from 'handlebars/runtime';
-import button from './components/button/button.hbs'
 import main from './pages/main/main.hbs'
 import notFound from './pages/not-found/not-found.hbs'
 
-Handlebars.registerPartial('button', button);
+
+import NavigationTo from './components/NavigationTo/NavigationTo.hbs';
+import SearchableInput from './components/SearchableInput/SearchableInput.hbs';
+
+Handlebars.registerPartial('NavigationTo', NavigationTo);
+Handlebars.registerPartial('SearchableInput', SearchableInput);
 
 export default class App {
     state: { [key: string]: any};

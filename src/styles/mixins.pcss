@@ -1,0 +1,13 @@
+@define-mixin font $weight, $size, $height {
+    font-weight: $weight;
+    font-size: $size;
+    line-height: $height;
+}
+
+@define-mixin opacity-transition {
+    transition: opacity 0.3s ease;
+}
+
+@define-mixin opacity-hover {
+    opacity: 0.7;
+}

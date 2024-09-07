@@ -5,13 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && node server.cjs",
     "preview": "vite preview"
   },
   "devDependencies": {
     "@types/node": "^22.5.4",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.45",
+    "postcss-mixins": "^10.0.1",
+    "postcss-nested": "^6.2.0",
     "postcss-preset-env": "^10.0.2",
     "typescript": "^5.5.3",
     "vite": "^5.4.1"

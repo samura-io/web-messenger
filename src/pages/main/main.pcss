@@ -1,0 +1,36 @@
+.main {
+    --asideLeftWidht: 20%;
+
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100vh;
+
+    &__asideLeft {
+        flex-basis: var(--asideLeftWidht);
+        background-color: var(--bgLightGrey);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding-top: 21px;
+        padding-inline: 10px;
+        
+        &::before {
+            content: '';
+            width: 1px;
+            height: 100%;
+            background-color: var(--divider);
+            position: absolute;
+            right: 0;
+            top: 0;
+            cursor: col-resize;
+        }
+
+        
+    }
+
+    &__asideRight {
+        flex-basis: calc(100% - var(--asideLeftWidht));
+        background-color: var(--bgWhite);
+    }
+}

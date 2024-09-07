@@ -1,4 +1,4 @@
-import './styles/style.pcss';
+import './styles/index.pcss';
 import App from './App';
 
 document.addEventListener('DOMContentLoaded', () => {
