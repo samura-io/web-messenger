@@ -1,0 +1,16 @@
+<article class="ChtaItem">
+    <div class="ChtaItem__avatar" style="background-image: url({{avatar}})"></div>
+    <div class="ChtaItem__content">
+        <span class="ChtaItem__name">{{name}}</span>
+            <span class="ChtaItem__text">
+                {{#if me}}
+                <span class="ChtaItem__me">Вы:</span>
+                {{/if}}
+                {{text}}
+            </span>
+    </div>
+    <div class="ChtaItem__indicators">
+        <span class="ChtaItem__time">{{time}}</span>
+        <div class="ChtaItem__indicator">{{messageCount}}</div>
+    </div>
+</article>
