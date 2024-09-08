@@ -1,5 +1,11 @@
 <div class="Chat">
-    {{#each chats}}
-        {{> ChatItem this}}
-    {{/each}}
+    {{#if searchable}}
+        {{#each searchableChats}}
+                {{> SearchableChatItem this}}
+        {{/each}}
+    {{else}}
+        {{#each chats}}
+                {{> ChatItem this}}
+        {{/each}}
+    {{/if}}
 </div>

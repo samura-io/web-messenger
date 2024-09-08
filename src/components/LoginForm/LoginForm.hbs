@@ -1,0 +1,11 @@
+<form class="LoginForm">
+    <div class="LoginForm__content">
+        <span class="LoginForm__title">Вход</span>
+        {{>Input label='Логин' type='text' name='login' value='' placeholder='Логин' error='Неверный логин'}}
+        {{>Input label='Пароль' type='password' name='password' value='' placeholder='Пароль'}}
+        <div class="LoginForm__footer">
+            {{>Button label='Авторизоваться' type='primary' formType='submit'}}
+            {{>Button id='noAccount' label='Нет аккаунта?' type='link' formType='button'}}
+        </div>
+    </div>
+</form>

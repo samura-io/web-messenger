@@ -1,0 +1,27 @@
+.Popup {
+    max-width: 340px;
+    min-width: 280px;
+    width: 100%;
+    padding: 30px;
+    border: 1px solid var(--divider);
+    border-radius: 12px;
+    min-height: 460px;
+    opacity: 0;
+    @mixin transition-all;
+
+    &__wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        width: 100%;
+    }
+
+    &_open {
+        opacity: 1;
+    }
+    
+    &__content {
+        height: 100%;
+    }
+}

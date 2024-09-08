@@ -2,7 +2,7 @@
     <div class="main__asideLeft">
         {{> NavigationTo url='/profile' label='Профиль' modifier='NavigationTo_position_left' }}
         {{> SearchableInput type='text' name='search' placeholder='Поиск' }}
-        {{> Chat chats=chats }}
+        {{> Chat chats=chats searchable=searchable }}
     </div>
     <div class="main__asideRight"></div>
 </main>

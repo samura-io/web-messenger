@@ -1,0 +1,48 @@
+.Button {
+    width: 100%;
+    height: 40px;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid var(--divider);
+
+    @mixin transition-all;
+    @mixin font 500, 13px, 13px;
+
+    background-color: var(--bgWhite);
+    color: var(--textBlack);
+    border: 1px solid var(--divider);
+    
+    &:hover {
+        color: var(--accent);
+        border: 1px solid var(--accent);
+    }
+
+    &_type_primary {
+        background-color: var(--accent);
+        color: var(--textWhite);
+        border: 1px solid var(--accent);
+
+        &:hover {
+            filter: brightness(1.3);
+            color: var(--textWhite);
+        }
+    }
+
+    &_type_default {
+        background-color: var(--bgWhite);
+        color: var(--textBlack);
+    }
+
+    &_type_link {
+        background-color: transparent;
+        color: var(--accent);
+        border: 1px solid transparent;
+
+        &:hover {
+            filter: brightness(1.3);
+            color: var(--accent);
+            border: 1px solid transparent;
+        }
+    }
+}

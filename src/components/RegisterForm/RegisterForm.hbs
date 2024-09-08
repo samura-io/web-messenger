@@ -1,0 +1,16 @@
+<form class="LoginForm">
+    <div class="LoginForm__content">
+        <span class="LoginForm__title">Регистрация</span>
+        {{>Input label='Почта' type='email' name='email' value='' placeholder='Почта'}}
+        {{>Input label='Логин' type='text' name='login' value='' placeholder='Логин'}}
+        {{>Input label='Имя' type='text' name='first_name' value='' placeholder='Имя'}}
+        {{>Input label='Фамилия' type='text' name='second_name' value='' placeholder='Фамилия'}}
+        {{>Input label='Телефон' type='tel' name='password' value='' placeholder='Телефон' pattern="\+7 \(\d{3}\) \d{3} \d{2} \d{2}"}}
+        {{>Input label='Пароль' type='password' name='password' value='' placeholder='Пароль'}}
+        {{>Input label='Пароль (ещё раз)' type='password' name='password' value='' placeholder='Пароль (ещё раз)'}}
+        <div class="LoginForm__footer">
+            {{>Button label='Зарегистрироваться' type='primary' formType='submit'}}
+            {{>Button label='Войти' type='link' formType='button' id='goToLogin'}}
+        </div>
+    </div>
+</form>

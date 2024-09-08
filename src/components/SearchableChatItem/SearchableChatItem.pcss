@@ -1,0 +1,24 @@
+.SearchableChatItem  {
+    display: flex;
+    width: 100%;
+    padding-block: 12px;
+    border-bottom: 1px solid var(--divider);
+    align-items: center;
+
+    &__avatar {
+        min-width: 47px;
+        height: 47px;
+        border-radius: 50%;
+        background-color: var(--bgDarkGray);
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        margin-right: 10px
+    }
+
+    &__name {
+        margin-bottom: 4px;
+        @mixin font 600, 13px, 13px;
+    }
+
+}

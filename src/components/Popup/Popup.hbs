@@ -1,0 +1,10 @@
+<div class="Popup__wrapper">
+    <div class="Popup Popup_open">
+            {{#if login}}
+                {{> LoginForm formData}}
+            {{/if}}
+            {{#if register}}
+                {{> RegisterForm formData}}
+            {{/if}}
+    </div>
+</div>
