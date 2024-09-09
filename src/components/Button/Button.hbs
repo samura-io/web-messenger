@@ -1,3 +1,8 @@
-<button class="Button Button_type_{{type}}" type="{{formType}}" {{#if id}} id="{{id}}" {{/if}}>
-    {{label}}
+<button 
+    class="Button Button_type_{{type}}" 
+    type="{{formType}}" 
+    {{#if id}} id="{{id}}" {{/if}}
+    {{#if danger}} danger="true" {{/if}}
+    >
+        {{label}}
 </button>

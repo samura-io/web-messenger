@@ -1,0 +1,46 @@
+.ProfilePage {
+    display: flex;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+    }
+
+    &__asideLeft {
+        background-color: var(--bgLightGrey);
+        border: 1px solid var(--divider);
+        width: 64px;
+        min-height: 100vh;
+        cursor: pointer;
+        @mixin transition-all;
+
+        &:hover > button {
+            opacity: 0.7;
+        }
+        
+        & > button {
+            position: sticky;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @media (max-width: 768px) {
+            width: 100%;
+            height: 64px;
+            align-items: flex-start;
+            padding-left: 20px;
+
+            & > button {
+                position: relative;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+    }
+
+    &__asideRight {
+        width: 100%;
+        @mixin transition-all;
+    }
+}

@@ -1,0 +1,42 @@
+.EditableEntry {
+    display: flex;
+    justify-content: space-between;
+    max-width: 510px;
+    width: 100%;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--divider);
+    gap: 10px;
+    margin-bottom: 10px;
+    @mixin transition-all;
+
+    &__label {
+        @mixin font 500, 13px, 13px;
+        word-wrap: no-wrap;
+    }
+
+    &__input {
+        margin-right: 10px;
+        border: 0;
+        color: var(--textBlack);
+        text-align: right;
+        flex-grow: 1;
+
+
+        @mixin font 500, 13px, 13px;
+
+        &:focus {
+            outline: none;
+        }
+
+        &:disabled {
+            background-color: transparent;
+            color: var(--textGray);
+        }
+    }
+
+    &:focus-within {
+        border-bottom: 1px solid var(--accent);
+    }
+
+
+}
