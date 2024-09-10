@@ -5,12 +5,16 @@ import main from '../pages/main/main.hbs'
 import loginPage from '../pages/login/loginPage.hbs'
 import registerPage from '../pages/register/registerPage.hbs'
 import profilePage from '../pages/profile/profilePage.hbs'
+import internalErorPage from '../pages/internal-error/internal-error.hbs'
+import notFoundPage from '../pages/not-found/not-found.hbs'
 
 export const templates = {
     main,
     loginPage,
     registerPage,
-    profilePage
+    profilePage,
+    notFoundPage,
+    internalErorPage,
 };
 
 // partials
@@ -29,6 +33,7 @@ import ProfileForm from '../components/ProfileForm/ProfileForm.hbs';
 import EditableAvatar from '../components/EditableAvatar/EditableAvatar.hbs';
 import EditableEntry from '../components/EditableEntry/EditableEntry.hbs';
 import ChangeAvatar from '../components/ChangeAvatar/ChangeAvatar.hbs';
+import ForErrorPages from '../components/ForErrorPages/ForErrorPages.hbs';
 
 export function registerHandlebarsPartials() {
     Handlebars.registerPartial('NavigationTo', NavigationTo);
@@ -46,5 +51,6 @@ export function registerHandlebarsPartials() {
     Handlebars.registerPartial('EditableAvatar', EditableAvatar);
     Handlebars.registerPartial('EditableEntry', EditableEntry);
     Handlebars.registerPartial('ChangeAvatar', ChangeAvatar);
+    Handlebars.registerPartial('ForErrorPages', ForErrorPages);
 }
 

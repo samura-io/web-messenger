@@ -1,0 +1,29 @@
+.ForErrorPages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+    padding-inline: 20px;
+
+    &__code {
+        @mixin font 500, 40px, 40px;
+        margin-bottom: 40px;
+
+        @media (max-width: 520px) {
+            @mixin font 500, 30px, 30px;
+            margin-bottom: 20px;
+        }
+    }
+
+    &__title {
+        @mixin font 500, 20px, 20px;
+        margin-bottom: 70px;
+
+        @media (max-width: 520px) {
+            @mixin font 500, 16px, 16px;
+            margin-bottom: 40px;
+        }
+    }
+}

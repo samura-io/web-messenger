@@ -34,7 +34,15 @@ export default class App {
         } else if (this.state.currentPage === '/profile') {
             template = templates.profilePage({});
             this.appElement.innerHTML = template;
+        } else if (this.state.currentPage === '/not-found') {
+            template = templates.notFoundPage({});
+            this.appElement.innerHTML = template;
+        } else if (this.state.currentPage === '/internal-error') {
+            template = templates.internalErorPage({});
+            this.appElement.innerHTML = template;
         }
+        
+
         this.setEventListeners();
     }
 
