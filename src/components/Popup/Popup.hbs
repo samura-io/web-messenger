@@ -1,10 +1,19 @@
-<div class="Popup__wrapper">
-    <div class="Popup Popup_open">
+{{!-- TODO Отключить скролл при открытом попапе с оверлеем через JS --}}
+<div 
+    class="Popup__overlay 
+    {{#if isEnableOverlay}} Popup__overlay_isEnableOverlay {{/if}}"
+>
+    <div class="Popup
+     Popup_open"
+    >
             {{#if login}}
                 {{> LoginForm formData}}
             {{/if}}
             {{#if register}}
                 {{> RegisterForm formData}}
+            {{/if}}
+            {{#if changeAvatar}}
+                {{> ChangeAvatar}}
             {{/if}}
     </div>
 </div>

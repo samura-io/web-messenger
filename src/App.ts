@@ -41,7 +41,27 @@ export default class App {
     setEventListeners() {
         const noAccount = document.querySelector('#noAccount');
         const goToLogin = document.querySelector('#goToLogin');
+        const goToProfile = document.querySelector('#toProfile');
+        const goToMain = document.querySelector('#goToMain');
+        const logout = document.querySelector('#logout');
+        const backToChats = document.querySelector('#backToChats');
 
+        backToChats?.addEventListener('click', () => {
+            this.changePage('/');
+        });
+
+        logout?.addEventListener('click', () => {
+            this.changePage('/login');
+        });
+
+        goToMain?.addEventListener('click', () => {
+            this.changePage('/');
+        });
+
+        goToProfile?.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.changePage('/profile');
+        });
 
         noAccount?.addEventListener('click', () => {
             this.changePage('/register');

@@ -28,6 +28,7 @@ import FloatButton from '../components/FloatButton/FloatButton.hbs';
 import ProfileForm from '../components/ProfileForm/ProfileForm.hbs';
 import EditableAvatar from '../components/EditableAvatar/EditableAvatar.hbs';
 import EditableEntry from '../components/EditableEntry/EditableEntry.hbs';
+import ChangeAvatar from '../components/ChangeAvatar/ChangeAvatar.hbs';
 
 export function registerHandlebarsPartials() {
     Handlebars.registerPartial('NavigationTo', NavigationTo);
@@ -44,5 +45,6 @@ export function registerHandlebarsPartials() {
     Handlebars.registerPartial('ProfileForm', ProfileForm);
     Handlebars.registerPartial('EditableAvatar', EditableAvatar);
     Handlebars.registerPartial('EditableEntry', EditableEntry);
+    Handlebars.registerPartial('ChangeAvatar', ChangeAvatar);
 }
 

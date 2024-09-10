@@ -1,8 +1,10 @@
 <main class="main">
     <div class="main__asideLeft">
-        {{> NavigationTo url='/profile' label='Профиль' modifier='NavigationTo_position_left' }}
+        {{> NavigationTo url='/profile' label='Профиль' modifier='NavigationTo_position_left' id='toProfile' }}
         {{> SearchableInput type='text' name='search' placeholder='Поиск' }}
         {{> Chat chats=chats searchable=searchable }}
     </div>
-    <div class="main__asideRight"></div>
+    <div class="main__asideRight">
+        <span class="main__plug">Выберите чат чтобы отправить сообщение</span>
+    </div>
 </main>
