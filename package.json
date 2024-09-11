@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && node server.cjs",
-    "preview": "vite preview"
+    "start": "tsc && vite build && node server.cjs",
+    "preview": "vite preview",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@types/node": "^22.5.4",

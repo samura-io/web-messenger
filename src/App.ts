@@ -3,7 +3,6 @@ import { registerHandlebarsPartials, templates } from './helpers/handlebarsInput
 
 registerHandlebarsPartials();
 
-
 export default class App {
     state: { [key: string]: any};
     appElement: HTMLElement | null;
