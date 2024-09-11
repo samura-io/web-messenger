@@ -53,4 +53,3 @@ export function registerHandlebarsPartials() {
     Handlebars.registerPartial('ChangeAvatar', ChangeAvatar);
     Handlebars.registerPartial('ForErrorPages', ForErrorPages);
 }
-
