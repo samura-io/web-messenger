@@ -2,8 +2,8 @@ import Handlebars from 'handlebars/runtime';
 
 // pages
 import main from '../pages/main/main.hbs'
-import loginPage from '../pages/login/loginPage.hbs'
-import registerPage from '../pages/register/registerPage.hbs'
+import loginPage from '../pages/login/LoginPage.hbs'
+import registerPage from '../pages/register/RegisterPage.hbs'
 import profilePage from '../pages/profile/profilePage.hbs'
 import internalErorPage from '../pages/internal-error/internal-error.hbs'
 import notFoundPage from '../pages/not-found/not-found.hbs'
