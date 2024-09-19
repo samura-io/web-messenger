@@ -4,10 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite", 
     "start": "tsc && vite build && node server.cjs",
+    "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prebuild": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/node": "^22.5.4",

@@ -1,4 +1,4 @@
-import { chats, searchableChats } from './data/chats';
+import { chats, searchableChats, messages } from './data/chats';
 import { registerHandlebarsPartials, templates } from './helpers/handlebarsInputs';
 
 registerHandlebarsPartials();
@@ -8,7 +8,7 @@ export default class App {
     appElement: HTMLElement | null;
     constructor() {
         this.state = {
-            currentPage: '/login',
+            currentPage: '/',
             searchable: false,
         }
         this.appElement = document.querySelector('#app')
@@ -22,6 +22,7 @@ export default class App {
                 searchable: this.state.searchable,
                 chats,
                 searchableChats,
+                messages,
             });
             this.appElement.innerHTML = template;
         } else if (this.state.currentPage === '/login') {

@@ -34,6 +34,9 @@ import EditableAvatar from '../components/EditableAvatar/EditableAvatar.hbs';
 import EditableEntry from '../components/EditableEntry/EditableEntry.hbs';
 import ChangeAvatar from '../components/ChangeAvatar/ChangeAvatar.hbs';
 import ForErrorPages from '../components/ForErrorPages/ForErrorPages.hbs';
+import Сorrespondence from '../components/Сorrespondence/Сorrespondence.hbs';
+import ClassicInput from '../components/ClassicInput/ClassicInput.hbs';
+import Message from '../components/Message/Message.hbs';
 
 export function registerHandlebarsPartials() {
     Handlebars.registerPartial('NavigationTo', NavigationTo);
@@ -52,4 +55,7 @@ export function registerHandlebarsPartials() {
     Handlebars.registerPartial('EditableEntry', EditableEntry);
     Handlebars.registerPartial('ChangeAvatar', ChangeAvatar);
     Handlebars.registerPartial('ForErrorPages', ForErrorPages);
+    Handlebars.registerPartial('Сorrespondence', Сorrespondence);
+    Handlebars.registerPartial('ClassicInput', ClassicInput);
+    Handlebars.registerPartial('Message', Message);
 }

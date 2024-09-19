@@ -1,0 +1,22 @@
+<div class="correspondence">
+    <div class="correspondence__header">
+        <div class="correspondence__userInfo">
+            <div class="correspondence__avatar" style="background-image: url({{avatar}})"></div>
+            <div class="correspondence__firstName">{{firstName}}</div>
+        </div>
+        <div class="correspondence__showMore"></div>
+    </div>
+    <div class="correspondence__content">
+        {{#each messages}}
+                {{> Message}}
+        {{/each}}
+    </div>
+    <form class="correspondence__footer">
+        <label for="file" class="correspondence__attachFile"></label>
+        <input type="file" name="file" id="file" accept="image/*" style="display: none"></input>
+        {{> ClassicInput name='message' id='input' type='text' placeholder='Cообщение' }}
+        <div class="correspondence__send">
+            {{> FloatButton htmlType='submit' id='backToChats' label='Новый чат' icon='/icons/arrow-left.svg' }}
+        </div>
+    </form>
+</div>

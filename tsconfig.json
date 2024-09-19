@@ -17,7 +17,12 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "strictNullChecks": true,
+
+    
   },
-  "include": ["src", "eslint.config.js"]
+  "Include": ["src", "eslint.config.js"]
 }
