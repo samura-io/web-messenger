@@ -18,6 +18,13 @@
         border: 1px solid var(--accent);
     }
 
+    &:disabled {
+        opacity: 0.5;
+        user-select: none;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
     &_type_primary {
         background-color: var(--accent);
         color: var(--textWhite);

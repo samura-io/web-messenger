@@ -7,6 +7,22 @@
     height: 100%;
     padding-inline: 20px;
 
+    &__input {
+        display: none;
+    }
+
+    &__label {
+        display: block;
+        text-align: center;
+        color: var(--accent);
+        cursor: pointer;
+        @mixin font 500, 15px, 20px;
+        @mixin opacity-transition;
+
+        &:hover {
+            @mixin opacity-hover;
+        }
+    }
 
     &__title {
         margin-bottom: 40px;

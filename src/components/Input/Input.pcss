@@ -3,6 +3,7 @@
     flex-direction: column;
     width: 100%;
     margin-bottom: 15px;
+    @mixin transition-all;
 
     &__label {
         margin-bottom: 8px;
@@ -41,4 +42,8 @@
         color: var(--textError);
         @mixin font 500, 9px, 9px;
     }
+}
+
+.invalid {
+    border-bottom: 1px solid var(--textError);
 }

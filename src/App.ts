@@ -1,5 +1,10 @@
-import { chats, searchableChats, messages } from './data/chats';
 import { registerHandlebarsPartials, templates } from './helpers/handlebarsInputs';
+import InternalErorPage from './pages/internal-error/internal-error';
+import LoginPage from './pages/login/LoginPage';
+import MainPage from './pages/main/main';
+import NotFoundPage from './pages/not-found/not-found';
+import ProfilePage from './pages/profile/ProfilePage';
+import RegisterPage from './pages/register/RegisterPage';
 
 registerHandlebarsPartials();
 
@@ -18,28 +23,33 @@ export default class App {
         if (!this.appElement) {return}
         let template;
         if (this.state.currentPage === '/') {
-            template = templates.main({ 
-                searchable: this.state.searchable,
-                chats,
-                searchableChats,
-                messages,
-            });
-            this.appElement.innerHTML = template;
+            const mainPage = new MainPage();
+            template = mainPage.getContent();
+            this.appElement.appendChild(template);
+            mainPage.dispatchComponentDidMount();
         } else if (this.state.currentPage === '/login') {
-            template = templates.loginPage({});
-            this.appElement.innerHTML = template;
+            const loginPage = new LoginPage();
+            template = loginPage.getContent();
+            this.appElement.appendChild(template);
+            loginPage.dispatchComponentDidMount();
         } else if (this.state.currentPage === '/register') {
-            template = templates.registerPage({});
-            this.appElement.innerHTML = template;
+            const registerPage = new RegisterPage();
+            template = registerPage.getContent();
+            this.appElement.append(template);
+            registerPage.dispatchComponentDidMount();
         } else if (this.state.currentPage === '/profile') {
-            template = templates.profilePage({});
-            this.appElement.innerHTML = template;
+            const profilePage = new ProfilePage();
+            template = profilePage.getContent();
+            this.appElement.appendChild(template);
+            profilePage.dispatchComponentDidMount();
         } else if (this.state.currentPage === '/not-found') {
-            template = templates.notFoundPage({});
-            this.appElement.innerHTML = template;
+            const notFoundPage = new NotFoundPage();
+            template = notFoundPage.getContent();
+            this.appElement.appendChild(template);
         } else if (this.state.currentPage === '/internal-error') {
-            template = templates.internalErorPage({});
-            this.appElement.innerHTML = template;
+            const internalErorPage = new InternalErorPage();
+            template = internalErorPage.getContent();
+            this.appElement.appendChild(template);
         }
         
 
@@ -62,9 +72,9 @@ export default class App {
             this.changePage('/login');
         });
 
-        goToMain?.addEventListener('click', () => {
-            this.changePage('/');
-        });
+        // goToMain?.addEventListener('click', () => {
+        //     this.changePage('/');
+        // });
 
         goToProfile?.addEventListener('click', (e) => {
             e.preventDefault();
@@ -82,7 +92,10 @@ export default class App {
     }
 
     changePage(path: string){
-        this.state.currentPage = path;
-        this.render();
+        if (this.appElement) {
+            this.state.currentPage = path;
+            this.appElement.innerHTML = '';
+            this.render();
+        }
     }
 }

@@ -6,7 +6,7 @@
 
     &__input {
         width: 100%;
-        padding: 10px 10px 10px 35px;
+        padding: 10px 35px 10px 35px;
         background-color: var(--bgDarkGray);
         outline: none;
         border-radius: 5px;
@@ -31,5 +31,22 @@
         top: 18px;
         transform: translateY(-50%);
         z-index: 10;
+    }
+
+    &__cancel {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        right: 16px;
+        top: 15px;
+        transform: translateY(-50%);
+        z-index: 10;
+        cursor: pointer;
+        rotate: 45deg;
+        opacity: 0.5;
+        width: 10px;
+        height: 10px;
+        font-size: 20px;
     }
 }

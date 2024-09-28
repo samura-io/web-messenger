@@ -1,1 +1,5 @@
-<button id="{{id}}" type="{{htmlType}}" class="FloatButton" style="background-image: url({{icon}})"></button>
+<button 
+    id="{{id}}" 
+    type="{{#if formType}}{{formType}}{{else}}button{{/if}}" 
+    class="FloatButton" style="background-image: url({{icon}})">
+</button>

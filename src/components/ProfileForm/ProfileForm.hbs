@@ -9,7 +9,7 @@
                 {{> Button label="Сохранить" type="primary" formType="submit" id="submit" }} 
             </div>
     {{else}}
-        {{> EditableEntry type="text" label="Почта" name="email" value="example@ex.com" disabled="true" }}
+        {{> EditableEntry type="text" label="Почта" name="email" value="example@ex.com" }}
         {{> EditableEntry type="text" label="Логин" name="login" value="ivanivanov" disabled="true" }}
         {{> EditableEntry type="text" label="Имя" name="first_name" value="Иван" disabled="true" }}
         {{> EditableEntry type="text" label="Фамилия" name="second_name" value="Иванов" disabled="true" }}
@@ -17,7 +17,7 @@
         {{> EditableEntry type="text" label="Телефон" name="phone" value="+7 (909) 967 30 30" disabled="true" }}
         <div class="ProfileForm__footer">
             {{#if disabled}}
-                {{> Button label="Изменить данные" type="link" formType="button" id="editButton" }}
+                {{> Button label="Изменить данные" type="link" formType="button" id="editProfileData" }}
                 {{> Button label="Изменить пароль" type="link" formType="button" id="savePasswordButton" }}
                 {{> Button id="logout" label="Выйти" type="link" formType="button" id="removeButton" danger="true" }}
             {{else}}
@@ -28,5 +28,4 @@
     {{#if isChangeAvatar}}
         {{>Popup changeAvatar=true isEnableOverlay=true}}
     {{/if}}
-
 </form>
