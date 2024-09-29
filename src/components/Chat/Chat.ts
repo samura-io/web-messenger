@@ -1,11 +1,12 @@
-import Block from '../../utils/Block';
+import { TChat, TChatsList, TsearchableChat } from '../../pages/main/main';
+import Block from '../../framework/Block';
 import ChatItem from '../ChatItem/ChatItem';
 import SearchableChatItem from '../SearchableChatItem/SearchableChatItem';
 
 type TChatProps = {
     searchable: boolean,
-    searchableChats: any,
-    chats: any,
+    searchableChats: TsearchableChat[],
+    chats: TChatsList,
     onSelectChat: (chatId: string) => void
 }
 
@@ -13,7 +14,7 @@ class Chat extends Block {
     constructor(props: TChatProps) {
       super({
         SearchableChatList: 
-            props.searchableChats?.map((chat: any)=>{
+            props.searchableChats?.map((chat: TsearchableChat)=>{
                 return new SearchableChatItem({
                     id: chat.id,
                     name: chat.name,
@@ -21,7 +22,7 @@ class Chat extends Block {
                 })
             }),
         ChatList:
-            props.chats?.map((chat: any)=>{
+            props.chats?.map((chat: TChat)=>{
                 return new ChatItem({
                     id: chat.id,
                     name: chat.name,

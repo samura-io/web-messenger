@@ -1,4 +1,4 @@
-import Block from '../../utils/Block';
+import Block from '../../framework/Block';
 
 type TNavigationToProps = {
     label: string,

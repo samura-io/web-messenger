@@ -1,4 +1,4 @@
-import Block, { Props } from '../../utils/Block';
+import Block, { Props } from '../../framework/Block';
 import ClassicInput from '../ClassicInput/ClassicInput';
 import FileInput from '../FileInput/FileInput';
 import FloatButton from '../FloatButton/FloatButton';
@@ -10,7 +10,6 @@ type TСorrespondenceFormProps = {
 
 class СorrespondenceForm extends Block {
     classicInput: ClassicInput;
-    fileInput: FileInput;
 
     constructor(props: TСorrespondenceFormProps) {
       super({
@@ -29,8 +28,8 @@ class СorrespondenceForm extends Block {
           formType: 'button',
           id: 'sendMessage',
           icon: '/icons/cancel.svg',
-          onClick: (event: Event) => {
-            this.handleCancelSelectFile(event);
+          onClick: () => {
+            this.handleCancelSelectFile();
           }
         }),
         FileInput: new FileInput({
@@ -54,7 +53,6 @@ class СorrespondenceForm extends Block {
       });
 
       this.classicInput = this.children.ClassicInput;
-      this.fileInput = this.children.FileInput;
     }
 
     componentDidUpdate(oldProps: Props, newProps: Props): boolean {
@@ -78,7 +76,8 @@ class СorrespondenceForm extends Block {
     }
 
     handleCancelSelectFile() {
-        const form = document.forms.correspondenceForm;
+        const form = document.forms[0];
+
         const fileInput = form.querySelector('input[type="file"]') as HTMLInputElement;
 
         this.classicInput.setProps({

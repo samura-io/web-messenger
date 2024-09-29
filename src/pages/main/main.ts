@@ -3,7 +3,33 @@ import SearchableInput from '../../components/SearchableInput/SearchableInput';
 import NavigationTo from '../../components/NavigationTo/NavigationTo';
 import Сorrespondence from '../../components/Сorrespondence/Сorrespondence';
 import { chats, searchableChats } from '../../data/chats';
-import Block from '../../utils/Block';
+import Block from '../../framework/Block';
+
+export type TMessage = {
+    time: string;
+    text?: string;
+    image?: string;
+    me?: boolean;
+}
+
+export type TChat = {
+  id: string;
+  name: string;
+  avatar: string;
+  text: string;
+  me: boolean;
+  messageCount: number;
+  time: string;
+  messageList: TMessage[];
+}
+
+export type TChatsList = TChat[];
+
+export type TsearchableChat = {
+  id: string;
+  name: string;
+  avatar: string;
+};
 
 
 class MainPage extends Block {
@@ -42,19 +68,19 @@ class MainPage extends Block {
             chats: chats,
             searchable: false,
             searchableChats: searchableChats,
-            onSelectChat: (chat: any) => {
+            onSelectChat: (chat: string) => {
                 this.handleSelectChat(chat);
             }
         }),
         Сorrespondence: new Сorrespondence({
-          chatInfo: [],
+          chatInfo: chats[0],
         }),
         searchable: false,
         isSelectChat: false,
       });
 
       this.chatComponent = this.children.Chat;
-      this.correspondence = this.children.Сorrespondence;
+      this.correspondence = this.children.Сorrespondence as Сorrespondence;
       
     }
 
@@ -77,8 +103,8 @@ class MainPage extends Block {
       })
     }
 
-    handleSelectChat(chatId: any) {
-      const currentChat = chats.find((item: any) => item.id === chatId);
+    handleSelectChat(chatId: string) {
+      const currentChat = chats.find((item) => item.id === chatId);
       this.correspondence.setProps({
         chatInfo: currentChat,
       })

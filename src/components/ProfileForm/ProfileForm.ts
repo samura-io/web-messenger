@@ -1,4 +1,4 @@
-import Block from '../../utils/Block';
+import Block from '../../framework/Block';
 import Validation from '../../utils/validation';
 import Button from '../Button/Button';
 import EditableAvatar from '../EditableAvatar/EditableAvatar';

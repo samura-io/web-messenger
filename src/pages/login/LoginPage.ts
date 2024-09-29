@@ -1,4 +1,4 @@
-import Block from '../../utils/Block';
+import Block from '../../framework/Block';
 import Popup from '../../components/Popup/Popup';
 import Validation from '../../utils/validation';
 

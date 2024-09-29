@@ -1,4 +1,4 @@
-import Block, { BlockEventsMap } from '../../utils/Block';
+import Block, { BlockEventsMap } from '../../framework/Block';
 
 type TButtonProps = {
   label: string,

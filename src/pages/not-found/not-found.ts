@@ -1,5 +1,5 @@
 import ForErrorPages from '../../components/ForErrorPages/ForErrorPages';
-import Block from '../../utils/Block';
+import Block from '../../framework/Block';
 
 
 class NotFoundPage extends Block {

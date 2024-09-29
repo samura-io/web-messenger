@@ -1,23 +1,22 @@
-type EventBusArgs = Array<unknown>
-type EventBusCallback = (...args: unknown[]) => void;
+type EventBusCallback<T = unknown> = (...args: T[]) => void; // Указан дженерик для колбэков
 
 class EventBus {
   listeners: { [key: string]: EventBusCallback[] };
-  
+
   constructor() {
     this.listeners = {};
   }
 
-  on(event: string, callback: EventBusCallback) {
+  on<T>(event: string, callback: EventBusCallback<T>) {
     if (!this.listeners[event]) {
       this.listeners[event] = [];
     }
 
-    this.listeners[event].push(callback);
+    this.listeners[event].push(callback as EventBusCallback);
   }
 
-  off(event: string, callback: EventBusCallback) {
-        if (!this.listeners[event]) {
+  off<T>(event: string, callback: EventBusCallback<T>) {
+    if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }
 
@@ -26,15 +25,15 @@ class EventBus {
     );
   }
 
-    emit(event: string, ...args: EventBusArgs) {
+  emit<T>(event: string, ...args: T[]) {
     if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }
-    
+
     this.listeners[event].forEach(function(listener) {
       listener(...args);
     });
   }
-  }
+}
 
-export default EventBus
+export default EventBus;

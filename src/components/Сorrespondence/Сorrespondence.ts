@@ -1,9 +1,10 @@
-import Block from '../../utils/Block';
+import { TChat, TMessage } from '../../pages/main/main';
+import Block from '../../framework/Block';
 import Message from '../Message/Message';
 import СorrespondenceForm from '../СorrespondenceForm/СorrespondenceForm';
 
 type TCorrespondenceProps = {
-    chatInfo: any;
+    chatInfo: TChat;
 }
 
 
@@ -12,10 +13,10 @@ class Сorrespondence extends Block {
 
     constructor(props: TCorrespondenceProps) {
       super({
-        firstName: props.chatInfo.firstName,
+        name: props.chatInfo.name,
         messageList: props.chatInfo.messageList,
         MessageList: 
-            props.chatInfo.messageList?.map((message: any) => {
+            props.chatInfo.messageList?.map((message: TMessage) => {
                 return new Message({
                     text: message.text,
                     time: message.time,
@@ -25,20 +26,23 @@ class Сorrespondence extends Block {
             }),
         CorrespondenceForm: new СorrespondenceForm({
             onSubmit: (event: Event) => {
-                this.handleSubmit(event, props.chatInfo.id);
+                this.handleSubmit(event);
             }
         })
       });
-      this.correspondenceForm = this.children.CorrespondenceForm;
+      
+      this.correspondenceForm = this.children.CorrespondenceForm as СorrespondenceForm;
     }
 
     componentDidUpdate(prevProps: TCorrespondenceProps, newProps: TCorrespondenceProps) {
-        const newMessageList = this.props.chatInfo?.messageList;
+        const chatInfo = this.props.chatInfo as TChat;
+        const newMessageList = chatInfo.messageList;
 
         if (prevProps.chatInfo?.messageList !== newProps.chatInfo?.messageList) {
                 this.setProps({
+                name: newProps.chatInfo.name,
                 MessageList: 
-                newMessageList?.map((message: any) => {
+                newMessageList?.map((message: TMessage) => {
                     return new Message({
                         text: message.text,
                         time: message.time,
@@ -52,9 +56,10 @@ class Сorrespondence extends Block {
         return true;
       }
 
-      handleSubmit(event: Event, chatId: string) {
+      handleSubmit(event: Event) {
         event.preventDefault();
         const target = event.target as HTMLFormElement;
+        console.dir(target);
         const formData = new FormData(target);
 
         const file = formData.get('file') as File;
@@ -80,7 +85,7 @@ class Сorrespondence extends Block {
             <div class="correspondence__header">
                 <div class="correspondence__userInfo">
                     <div class="correspondence__avatar" style="background-image: url({{avatar}})"></div>
-                    <div class="correspondence__firstName">{{firstName}}</div>
+                    <div class="correspondence__firstName">{{name}}</div>
                 </div>
                 <div class="correspondence__showMore"></div>
             </div>

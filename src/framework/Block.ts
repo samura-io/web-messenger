@@ -115,8 +115,8 @@ class Block {
 
   // Метод жля изменения аттрибутов элемента
   // Например, поменять цвет кнопки не перерисовывая компонент
-  addAttributes(outerAttr: { [key: string]: unknown }) {
-    const { attr = {} } = outerAttr || this.props;
+  addAttributes() {
+    const { attr = {} } = this.props;
     Object.entries(attr as { [s: string]: unknown }).forEach(([key, value]) => {
       if (this.element) {
         this.element.setAttribute(key, value as string);
@@ -125,6 +125,8 @@ class Block {
   }
   
   componentDidUpdate(oldProps: Props, newProps: Props) {
+    oldProps = oldProps || {};
+    newProps = newProps || {};
     return true;
   }
   
@@ -156,7 +158,7 @@ class Block {
       propsAndStrubs[key] = `<div data-id="__l_${key + _tmpId}"></div>`;
     });
 
-    const fragment = this._createDocumentElement('template');
+    const fragment = this._createDocumentElement('template') as HTMLTemplateElement;
     fragment.innerHTML = Handlebars.compile(this.render())(propsAndStrubs);
 
     Object.values(this.children).forEach(child => {
@@ -167,7 +169,7 @@ class Block {
     });
 
     Object.entries(this.lists).forEach(([key, child]) => {
-      const listCont = this._createDocumentElement('template');
+      const listCont = this._createDocumentElement('template') as HTMLTemplateElement;
       child.forEach(item => {
         if (item instanceof Block) {
           listCont.content.append(item.getContent());

@@ -1,6 +1,6 @@
 import FloatButton from '../../components/FloatButton/FloatButton';
 import ProfileForm from '../../components/ProfileForm/ProfileForm';
-import Block from '../../utils/Block';
+import Block from '../../framework/Block';
 
 class ProfilePage extends Block {
     constructor() {

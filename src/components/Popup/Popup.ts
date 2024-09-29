@@ -1,4 +1,4 @@
-import Block from '../../utils/Block';
+import Block from '../../framework/Block';
 import ChangeAvatar from '../ChangeAvatar/ChangeAvatar';
 import LoginForm from '../LoginForm/LoginForm';
 import RegisterForm from '../RegisterForm/RegisterForm';
@@ -8,7 +8,7 @@ type TPopupProps = {
   register?: boolean,
   changeAvatar?: boolean,
   isEnableOverlay?: boolean,
-  submitChangeAvatar: (event: Event, form: HTMLFormElement) => void
+  submitChangeAvatar?: (event: Event, form: HTMLFormElement) => void
 }
 
 class Popup extends Block {

@@ -1,4 +1,3 @@
-import { registerHandlebarsPartials, templates } from './helpers/handlebarsInputs';
 import InternalErorPage from './pages/internal-error/internal-error';
 import LoginPage from './pages/login/LoginPage';
 import MainPage from './pages/main/main';
@@ -6,10 +5,9 @@ import NotFoundPage from './pages/not-found/not-found';
 import ProfilePage from './pages/profile/ProfilePage';
 import RegisterPage from './pages/register/RegisterPage';
 
-registerHandlebarsPartials();
 
 export default class App {
-    state: { [key: string]: any};
+    state: { [key: string]: unknown};
     appElement: HTMLElement | null;
     constructor() {
         this.state = {
@@ -60,7 +58,7 @@ export default class App {
         const noAccount = document.querySelector('#noAccount');
         const goToLogin = document.querySelector('#goToLogin');
         const goToProfile = document.querySelector('#toProfile');
-        const goToMain = document.querySelector('#goToMain');
+        // const goToMain = document.querySelector('#goToMain');
         const logout = document.querySelector('#logout');
         const backToChats = document.querySelector('#backToChats');
 
