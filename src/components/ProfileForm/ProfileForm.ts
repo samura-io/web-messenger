@@ -209,7 +209,6 @@ class ProfileForm extends Block {
     }
 
     handleIsChangePassword(value: boolean) {
-      console.log(value);
       this.setProps({
         isChangePassword: value,
       });

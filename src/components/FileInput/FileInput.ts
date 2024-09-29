@@ -5,10 +5,12 @@ type TFileInputProps = {
     name: string,
     id: string,
     accept: string,
+    isSelectedFile?: boolean
     onChange?: (event: Event) => void
 }
 
 class FileInput extends Block {
+    value: unknown;
     constructor(props: TFileInputProps) {
       super({
         ...props,

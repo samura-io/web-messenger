@@ -14,6 +14,8 @@ class SearchableInput extends Block {
         events: {
           click: (e) => {
             props.onFocus && props.onFocus(e);
+            const input = e.target as HTMLInputElement;
+            input.focus();
           },
         },
       });

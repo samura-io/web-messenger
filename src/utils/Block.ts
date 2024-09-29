@@ -35,14 +35,16 @@ class Block {
   
   constructor(propsWithChildren: Props = {}) {
     const eventBus = new EventBus();
+    this._registerEvents(eventBus);
+    this.eventBus = () => eventBus;
+    
+    this._id = makeUUID();
+
     const {props, children, lists} = this._getChildrenAndProps(propsWithChildren);
     this.props = this._makePropsProxy({...props, __id: this._id});
     this.children = children;
-    
     this.lists = lists;
-    this.eventBus = () => eventBus;
-    this._registerEvents(eventBus);
-    this._id = makeUUID();
+
     eventBus.emit(Block.EVENTS.INIT);
   }
   
@@ -103,9 +105,6 @@ class Block {
   }
   
   _componentDidUpdate(oldProps: Props, newProps: Props) {
-    // Можно добавить проверку - если пропсы изменились,
-    // то выполняем перерендер, иначе ничего не делаем
-    // Но в данном случае это не реализовано
     const response = this.componentDidUpdate(oldProps, newProps);
     if (!response) {
       return;
@@ -116,8 +115,8 @@ class Block {
 
   // Метод жля изменения аттрибутов элемента
   // Например, поменять цвет кнопки не перерисовывая компонент
-  addAttributes() {
-    const { attr = {} } = this.props;
+  addAttributes(outerAttr: { [key: string]: unknown }) {
+    const { attr = {} } = outerAttr || this.props;
     Object.entries(attr as { [s: string]: unknown }).forEach(([key, value]) => {
       if (this.element) {
         this.element.setAttribute(key, value as string);
@@ -216,8 +215,6 @@ class Block {
         target[prop] = value;
         const newProps = {...target};
 
-        // Запускаем обновление компоненты
-        // Плохой cloneDeep, в следующей итерации нужно заставлять добавлять cloneDeep им самим
         self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, newProps);
         return true;
       },

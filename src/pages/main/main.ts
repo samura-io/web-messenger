@@ -47,7 +47,7 @@ class MainPage extends Block {
             }
         }),
         Сorrespondence: new Сorrespondence({
-          messageList: [],
+          chatInfo: [],
         }),
         searchable: false,
         isSelectChat: false,
@@ -80,8 +80,7 @@ class MainPage extends Block {
     handleSelectChat(chatId: any) {
       const currentChat = chats.find((item: any) => item.id === chatId);
       this.correspondence.setProps({
-        messageList: currentChat?.messageList,
-        firstName: currentChat?.name,
+        chatInfo: currentChat,
       })
       this.setProps({
         isSelectChat: true,

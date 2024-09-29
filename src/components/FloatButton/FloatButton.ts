@@ -4,11 +4,17 @@ type TFloatButtonProps = {
     id: string
     icon: string
     formType?: string
+    onClick?: (e: Event) => void
 }
 
 class FloatButton extends Block {
     constructor(props: TFloatButtonProps) {
       super({
+        events: {
+          click: (e) => {
+            props.onClick && props.onClick(e);
+          }
+        },
         ...props
       });
     }

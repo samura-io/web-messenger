@@ -1,20 +1,21 @@
 import Block from '../../utils/Block';
-import ClassicInput from '../ClassicInput/ClassicInput';
-import FloatButton from '../FloatButton/FloatButton';
 import Message from '../Message/Message';
+import СorrespondenceForm from '../СorrespondenceForm/СorrespondenceForm';
 
 type TCorrespondenceProps = {
-    messageList: any;
+    chatInfo: any;
 }
 
 
 class Сorrespondence extends Block {
+    correspondenceForm: СorrespondenceForm;
+
     constructor(props: TCorrespondenceProps) {
       super({
-        firstName: props.firstName,
-        messageList: props.messageList,
+        firstName: props.chatInfo.firstName,
+        messageList: props.chatInfo.messageList,
         MessageList: 
-            props.messageList.map((message: any) => {
+            props.chatInfo.messageList?.map((message: any) => {
                 return new Message({
                     text: message.text,
                     time: message.time,
@@ -22,26 +23,22 @@ class Сorrespondence extends Block {
                     me: message.me
                 });
             }),
-        ClassicInput: new ClassicInput({
-            name: 'message',
-            type: 'text',
-            placeholder: 'Сообщение',
-        }),
-        SendButton: new FloatButton({
-            formType: 'submit',
-            id: 'sendMessage',
-            icon: '/icons/arrow-left.svg',
+        CorrespondenceForm: new СorrespondenceForm({
+            onSubmit: (event: Event) => {
+                this.handleSubmit(event, props.chatInfo.id);
+            }
         })
       });
+      this.correspondenceForm = this.children.CorrespondenceForm;
     }
 
     componentDidUpdate(prevProps: TCorrespondenceProps, newProps: TCorrespondenceProps) {
-        const newMessageList = this.props.messageList;
+        const newMessageList = this.props.chatInfo?.messageList;
 
-        if (prevProps.messageList !== newProps.messageList) {
+        if (prevProps.chatInfo?.messageList !== newProps.chatInfo?.messageList) {
                 this.setProps({
                 MessageList: 
-                newMessageList.map((message: any) => {
+                newMessageList?.map((message: any) => {
                     return new Message({
                         text: message.text,
                         time: message.time,
@@ -52,10 +49,29 @@ class Сorrespondence extends Block {
             })
         }
         
-        
-
-        
         return true;
+      }
+
+      handleSubmit(event: Event, chatId: string) {
+        event.preventDefault();
+        const target = event.target as HTMLFormElement;
+        const formData = new FormData(target);
+
+        const file = formData.get('file') as File;
+        const message = formData.get('message') as string;
+
+        if (file.size > 0) {
+            console.log("Отправляем файл: ", file);
+            this.correspondenceForm.setProps({
+                reset: true,
+            })
+        } else if (message.trim()) {
+            console.log('Отправляем сообщение: ', message.trim());
+        } else {
+            console.log('Ничего не отправляем');
+        }
+
+        target.reset();
       }
 
     render() {
@@ -71,14 +87,7 @@ class Сorrespondence extends Block {
             <div class="correspondence__content">
                 {{{ MessageList }}}
             </div>
-            <form class="correspondence__footer">
-                <label for="file" class="correspondence__attachFile"></label>
-                <input type="file" name="file" id="file" accept="image/*" style="display: none"></input>
-                {{{ ClassicInput }}}
-                <div class="correspondence__send">
-                    {{{ SendButton }}}
-                </div>
-            </form>
+            {{{ CorrespondenceForm }}}
         </div>
       `
     }

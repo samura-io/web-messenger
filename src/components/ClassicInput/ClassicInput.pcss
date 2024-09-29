@@ -10,6 +10,10 @@
     overflow: hidden;
     @mixin font 500, 12px, 12px;
 
+    &:disabled {
+        opacity: 0.7;
+    }
+
     &::placeholder {
         color: var(--textGray);
     }

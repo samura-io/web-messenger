@@ -33,14 +33,3 @@ class LoginPage extends Block {
 }
 
 export default LoginPage;
-
-// componentDidMount(): void {
-//   const validation = new Validation('RegisterForm');
-//   const form = validation.form;
-//   form?.addEventListener('validationSuccess', this.handleValidSubmit.bind(this) as EventListener);
-// }
-
-// handleValidSubmit(event: CustomEvent){
-//   const fieldsData = event.detail.fields;
-//   console.log(`Отправляем данные регистрации: ${JSON.stringify(fieldsData)}`);
-// }

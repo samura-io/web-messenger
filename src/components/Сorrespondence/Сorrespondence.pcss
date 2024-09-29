@@ -68,6 +68,10 @@
         cursor: pointer;
         @mixin opacity-transition;
 
+        &_hidden {
+            display: none;
+        }
+
         &:hover {
             @mixin opacity-hover;
         }
