@@ -103,6 +103,19 @@ class Block {
       }
     });
   }
+
+  removeEvents() {
+    const { events } = this.props;
+    if (!events) {
+      return;
+    }
+
+    Object.keys(events).forEach(eventName => {
+      if (this._element) {
+        this._element.removeEventListener(eventName, events[eventName]);
+      }
+    });
+  }
   
   _componentDidUpdate(oldProps: Props, newProps: Props) {
     const response = this.componentDidUpdate(oldProps, newProps);

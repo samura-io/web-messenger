@@ -16,8 +16,8 @@ class ProfileForm extends Block {
   constructor(props: TProfileFormProps) {
     super({
       EditableAvatar: new EditableAvatar({
-        events: {
-          click: () => this.handleIsChangeAvatar(true),
+        onClick: () => {
+          this.handleIsChangeAvatar(true);
         },
       }),
       ChangePasswordForm: [
