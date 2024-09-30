@@ -27,18 +27,22 @@
 
     &__name {
         margin-bottom: 4px;
+
         @mixin font 600, 13px, 13px;
     }
 
     &__me {
         margin-right: 3px;
         color: var(--textBlack);
+
         @mixin font 500, 12px, 15px;
     }
 
     &__text {
         color: var(--textGray);
+
         @mixin font 500, 12px, 15px;
+
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
@@ -49,7 +53,6 @@
     &__indicators {
         flex-grow: 1;
         margin-left: 10px;
-
         display: flex;
         flex-direction: column;
         align-items: flex-end;
@@ -57,7 +60,9 @@
 
     &__time {
         color: var(--textGray);
+
         @mixin font 500, 9px, 13px;
+
         margin-bottom: 14px;
     }
 
@@ -69,6 +74,7 @@
         background-color: var(--accent);
         padding: 4px 6px;
         color: var(--textWhite);
+
         @mixin font 500, 11px, 13px;
     }
 }

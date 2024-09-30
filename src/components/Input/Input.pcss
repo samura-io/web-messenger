@@ -3,11 +3,13 @@
     flex-direction: column;
     width: 100%;
     margin-bottom: 15px;
+
     @mixin transition-all;
 
     &__label {
         margin-bottom: 8px;
         color: var(--textGray);
+
         @mixin font 500, 9px, 9px;
     }
 
@@ -19,6 +21,7 @@
         margin-bottom: 7px;
         border-bottom: 1px solid var(--accent);
         outline: none;
+
         @mixin font 500, 13px, 13px;
 
         &::placeholder {
@@ -40,6 +43,7 @@
 
     &__error {
         color: var(--textError);
+
         @mixin font 500, 9px, 9px;
     }
 }

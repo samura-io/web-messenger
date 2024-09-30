@@ -9,8 +9,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint **/*.{js,ts}",
-    "lint-css": "stylelint **/*.css",
-    "lint-css:fix": "stylelint **/*.css --fix",
+    "lint-pcss": "stylelint **/*.pcss",
+    "lint-pcss:fix": "stylelint **/*.pcss --fix",
     "lint:fix": "eslint --fix **/*.{js,ts}",
     "prebuild": "tsc --noEmit"
   },
