@@ -18,7 +18,7 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "sourceMap": true,
-    "strictNullChecks": true,
+    "strictNullChecks": true
   },
   "Include": ["src", "eslint.config.js"]
 }
