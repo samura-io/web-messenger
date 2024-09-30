@@ -1,7 +1,14 @@
 {
-    "extends": [
-      "stylelint-config-recommended",
-      "stylelint-config-standard"
-    ],
-    "rules": {}
+  "extends": [
+    "stylelint-config-recommended",
+    "stylelint-config-standard"
+  ],
+  "rules": {
+    "custom-property-pattern": null,
+    "at-rule-no-unknown": null,
+    "declaration-block-no-shorthand-property-overrides": null,
+    "selector-class-pattern": null,
+    "no-duplicate-selectors": null,
+    "no-descending-specificity": null
   }
+}
