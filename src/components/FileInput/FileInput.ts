@@ -1,30 +1,33 @@
 import Block from '../../framework/Block';
 
 type TFileInputProps = {
-    type: string,
-    name: string,
-    id: string,
-    accept: string,
-    isSelectedFile?: boolean
-    onChange?: (event: Event) => void
-}
+  type: string,
+  name: string,
+  id: string,
+  accept: string,
+  isSelectedFile?: boolean
+  onChange?: (event: Event) => void
+};
 
 class FileInput extends Block {
-    value: unknown;
-    constructor(props: TFileInputProps) {
-      super({
-        ...props,
-        events: {
-          change: (event: Event) => {
-            props.onChange && props.onChange(event);
-          },
-        }
-      });
-    }
-      
-  
-    render() {
-      return `
+  value: unknown;
+
+  constructor(props: TFileInputProps) {
+    super({
+      ...props,
+      events: {
+        change: (event: Event) => {
+          if (props.onChange) {
+            props.onChange(event);
+          }
+        },
+      },
+    });
+  }
+
+
+  render() {
+    return `
         <input 
             class="ChangeAvatar__input" 
             type='{{type}}' 
@@ -32,8 +35,8 @@ class FileInput extends Block {
             id="{{id}}" 
             accept="{{accept}}"
         >  
-      `
-    }
+      `;
+  }
 }
 
 export default FileInput;

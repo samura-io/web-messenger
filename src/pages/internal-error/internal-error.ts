@@ -3,22 +3,22 @@ import Block from '../../framework/Block';
 
 
 class InternalErorPage extends Block {
-    constructor() {
-      super({
-        ForErrorPages: new ForErrorPages({
-            code: '500',
-            title: 'Мы уже фиксим',
-        })
-      });
-    }
+  constructor() {
+    super({
+      ForErrorPages: new ForErrorPages({
+        code: '500',
+        title: 'Мы уже фиксим',
+      }),
+    });
+  }
   
-    render() {
-        return `
+  render() {
+    return `
             <main class="InternalErorPage">
                 {{{ ForErrorPages }}}
             </main>
-        `
-    }
+        `;
+  }
 }
 
 export default InternalErorPage;

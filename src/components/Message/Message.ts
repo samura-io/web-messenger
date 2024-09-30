@@ -1,21 +1,21 @@
 import Block from '../../framework/Block';
 
 type TMessageProps = {
-    text?: string;
-    time?: string;
-    image?: string;
-    me?: boolean;
-}
+  text?: string;
+  time?: string;
+  image?: string;
+  me?: boolean;
+};
 
 class Message extends Block {
-    constructor(props: TMessageProps) {
-      super({
-        ...props
-      });
-    }
+  constructor(props: TMessageProps) {
+    super({
+      ...props,
+    });
+  }
   
-    render() {
-      return `
+  render() {
+    return `
         <div class="message">
             {{#if image}}
                 <img src="{{image}}" class="message__image {{#if me}}message__image_me{{/if}}">
@@ -27,8 +27,8 @@ class Message extends Block {
 
             {{/if}}
         </div>
-      `
-    }
+      `;
+  }
 }
 
 export default Message;

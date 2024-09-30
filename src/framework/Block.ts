@@ -1,23 +1,23 @@
-import EventBus from "./EventBus";
-import {v4 as makeUUID} from 'uuid';
-import Handlebars from "handlebars";
+import EventBus from './EventBus';
+import { v4 as makeUUID } from 'uuid';
+import Handlebars from 'handlebars';
 
 export type Props = {
   [key: string]: unknown;
   events?: { [key: string]: (event: Event) => void };
-}
+};
 
 export type BlockEventsMap = {
   [key: string]: (event: Event) => void
-}
+};
 
 class Block {
   
   private static EVENTS = {
-    INIT: "init",
-    FLOW_CDM: "flow:component-did-mount",
-    FLOW_CDU: "flow:component-did-update",
-    FLOW_RENDER: "flow:render"
+    INIT: 'init',
+    FLOW_CDM: 'flow:component-did-mount',
+    FLOW_CDU: 'flow:component-did-update',
+    FLOW_RENDER: 'flow:render',
   };
   
   private _element: HTMLElement | null = null;
@@ -40,8 +40,8 @@ class Block {
     
     this._id = makeUUID();
 
-    const {props, children, lists} = this._getChildrenAndProps(propsWithChildren);
-    this.props = this._makePropsProxy({...props, __id: this._id});
+    const { props, children, lists } = this._getChildrenAndProps(propsWithChildren);
+    this.props = this._makePropsProxy({ ...props, __id: this._id });
     this.children = children;
     this.lists = lists;
 
@@ -125,8 +125,14 @@ class Block {
   }
   
   componentDidUpdate(oldProps: Props, newProps: Props) {
-    oldProps = oldProps || {};
-    newProps = newProps || {};
+    if (oldProps) {
+      // Используйте oldProps в своей логике здесь
+    }
+  
+    if (newProps) {
+      // Используйте newProps в своей логике здесь
+    }
+    
     return true;
   }
   
@@ -146,16 +152,16 @@ class Block {
     return this._element;
   }
   
- _render() {
-    const propsAndStrubs = {...this.props};
+  _render() {
+    const propsAndStrubs = { ...this.props };
 
     Object.entries(this.children).forEach(([key, child]) => {
       propsAndStrubs[key] = `<div data-id="${child._id}"></div>`;
     });
 
-    const _tmpId = Math.floor(100000 + Math.random() * 900000);
+    const tmpId = Math.floor(100000 + Math.random() * 900000);
     Object.entries(this.lists).forEach(([key]) => {
-      propsAndStrubs[key] = `<div data-id="__l_${key + _tmpId}"></div>`;
+      propsAndStrubs[key] = `<div data-id="__l_${key + tmpId}"></div>`;
     });
 
     const fragment = this._createDocumentElement('template') as HTMLTemplateElement;
@@ -174,10 +180,10 @@ class Block {
         if (item instanceof Block) {
           listCont.content.append(item.getContent());
         } else {
-          listCont.content.append(`${item}`);
+          listCont.content.append(item);
         }
       });
-      const stub = fragment.content.querySelector(`[data-id="__l_${key + _tmpId}"]`);
+      const stub = fragment.content.querySelector(`[data-id="__l_${key + tmpId}"]`);
       if (stub) {
         stub.replaceWith(listCont.content);
       }
@@ -190,39 +196,40 @@ class Block {
     this._element = newElement;
     this._addEvents();
     this.addAttributes();
-}
+  }
   
   render(): string {
-    return "";
+    return '';
   }
   
   getContent() {
     if (this.element === null) {
-        throw new Error("Component hasn't been rendered");
+      throw new Error("Component hasn't been rendered");
     }
 
     return this.element;
-}
+  }
   
   _makePropsProxy(props: Props) {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
   
     return new Proxy(props, {
       get(target, prop: string) {
         const value = target[prop];
-        return typeof value === "function" ? value.bind(target) : value;
+        return typeof value === 'function' ? value.bind(target) : value;
       },
       set(target, prop: string, value) {
-        const oldProps = {...target};
+        const oldProps = { ...target };
         target[prop] = value;
-        const newProps = {...target};
+        const newProps = { ...target };
 
         self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, newProps);
         return true;
       },
       deleteProperty() {
-        throw new Error("Нет доступа");
-      }
+        throw new Error('Нет доступа');
+      },
     });
   }
 
@@ -232,11 +239,11 @@ class Block {
   }
   
   show() {
-    this.getContent().style.display = "block";
+    this.getContent().style.display = 'block';
   }
   
   hide() {
-    this.getContent().style.display = "none";
+    this.getContent().style.display = 'none';
   }
 }
 

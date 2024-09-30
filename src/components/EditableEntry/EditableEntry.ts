@@ -11,17 +11,17 @@ type TEditableEntryProps = {
   maxLength?: number,
   required?: boolean,
   onlyStandartValidate?: boolean,
-}
+};
 
 class EditableEntry extends Block {
-    constructor(props: TEditableEntryProps) {
-      super({
-        ...props,
-      });
-    }
+  constructor(props: TEditableEntryProps) {
+    super({
+      ...props,
+    });
+  }
   
-    render() {
-      return `
+  render() {
+    return `
       <div class="EditableEntry">
         <div class="EditableEntry__container">
             <label class="EditableEntry__label">{{label}}</label>
@@ -40,8 +40,8 @@ class EditableEntry extends Block {
         </div>
         <div for="{{name}}" class="EditableEntry__error"></div>
       </div>
-      `
-    }
+      `;
+  }
 }
 
 export default EditableEntry;

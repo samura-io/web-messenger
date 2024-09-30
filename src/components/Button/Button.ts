@@ -9,17 +9,17 @@ type TButtonProps = {
   events?: BlockEventsMap,
   onClick?: (e: Event) => void,
   disabled?: boolean,
-}
+};
 
 class Button extends Block {
-    constructor(props: TButtonProps) {
-      super({
-        ...props,
-      });
-    }
+  constructor(props: TButtonProps) {
+    super({
+      ...props,
+    });
+  }
   
-    render() {
-      return `
+  render() {
+    return `
           <button 
               class="Button Button_type_{{type}}" 
               type="{{#if formType}}{{formType}}{{else}}button{{/if}}" 
@@ -29,8 +29,8 @@ class Button extends Block {
               >
                   {{label}}
           </button>
-      `
-    }
+      `;
+  }
 }
 
 export default Button;

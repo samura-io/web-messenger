@@ -1,28 +1,28 @@
 import Block from '../../framework/Block';
 
 type TInputProps = {
-    label: string,
-    type: string,
-    name: string,
-    value: string,
-    placeholder?: string,
-    pattern?: string,
-    required?: boolean,
-    disabled?: boolean,
-    minLength?: number,
-    maxLength?: number,
-    onlyStandartValidate?: boolean
-}
+  label: string,
+  type: string,
+  name: string,
+  value: string,
+  placeholder?: string,
+  pattern?: string,
+  required?: boolean,
+  disabled?: boolean,
+  minLength?: number,
+  maxLength?: number,
+  onlyStandartValidate?: boolean
+};
 
 class Input extends Block {
-    constructor(props: TInputProps) {
-      super({
-        ...props,
-      });
-    }
+  constructor(props: TInputProps) {
+    super({
+      ...props,
+    });
+  }
   
-    render() {
-      return `
+  render() {
+    return `
             <div class="Input">
                 <label class="Input__label">{{label}}</label>
                 <input 
@@ -41,8 +41,8 @@ class Input extends Block {
                     <span class="Input__error"></span>
 
             </div>    
-      `
-    }
+      `;
+  }
 }
 
 export default Input;

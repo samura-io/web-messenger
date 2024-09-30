@@ -1,28 +1,30 @@
 import Block from '../../framework/Block';
 
 type TNavigationToProps = {
-    label: string,
-    url: string,
-    modifier?: string,
-    id?: string,
-    onClick?: (e: Event) => void,
-    accent?: boolean
-}
+  label: string,
+  url: string,
+  modifier?: string,
+  id?: string,
+  onClick?: (e: Event) => void,
+  accent?: boolean
+};
 
 class NavigationTo extends Block {
-    constructor(props: TNavigationToProps) {
-      super({
-        ...props,
-        events: {
-          click: (e) => {
-            props.onClick && props.onClick(e);
+  constructor(props: TNavigationToProps) {
+    super({
+      ...props,
+      events: {
+        click: (e) => {
+          if (props.onClick) {
+            props.onClick(e);
           }
-        }
-      });
-    }
+        },
+      },
+    });
+  }
   
-    render() {
-      return `
+  render() {
+    return `
         <a 
             href="{{url}}" 
             class="NavigationTo {{modifier}}" 
@@ -31,8 +33,8 @@ class NavigationTo extends Block {
         >
             {{label}} 
         </a>
-      `
-    }
+      `;
+  }
 }
 
 export default NavigationTo;

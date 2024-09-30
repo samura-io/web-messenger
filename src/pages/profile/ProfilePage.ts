@@ -3,22 +3,22 @@ import ProfileForm from '../../components/ProfileForm/ProfileForm';
 import Block from '../../framework/Block';
 
 class ProfilePage extends Block {
-    constructor() {
-      super({
-        FloatButton: new FloatButton({
-          id: 'backToChats',
-          icon: '/icons/arrow-left.svg',
-        }),
-        ProfileForm: new ProfileForm({
-          isChangeAvatar: false,
-          isChangePassword: false,
-          isDisabled: true,
-        }),
-      });
-    }
+  constructor() {
+    super({
+      FloatButton: new FloatButton({
+        id: 'backToChats',
+        icon: '/icons/arrow-left.svg',
+      }),
+      ProfileForm: new ProfileForm({
+        isChangeAvatar: false,
+        isChangePassword: false,
+        isDisabled: true,
+      }),
+    });
+  }
   
-    render() {
-        return `
+  render() {
+    return `
           <main class="ProfilePage">
               <div id="backToChats" class="ProfilePage__asideLeft">
                   {{{ FloatButton }}}
@@ -27,8 +27,8 @@ class ProfilePage extends Block {
                   {{{ ProfileForm }}}
               </div>
           </main>
-        `
-    }
+        `;
+  }
 }
 
 export default ProfilePage;

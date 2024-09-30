@@ -1,29 +1,32 @@
 import Block from '../../framework/Block';
 
 type TChatItemProps = {
-    id: string,
-    name: string,
-    text: string,
-    time: string,
-    me: boolean,
-    messageCount: number,
-    avatar: string
-    onSelectChat?: (chatId: string) => void
-}
+  id: string,
+  name: string,
+  text: string,
+  time: string,
+  me: boolean,
+  messageCount: number,
+  avatar: string
+  onSelectChat?: (chatId: string) => void
+};
 
 class ChatItem extends Block {
-    constructor(props: TChatItemProps) {
-      super({
-        events: {
-          click: () => {
-            props.onSelectChat && props.onSelectChat(props.id)}
-          },
-        ...props
-      });
-    }
+  constructor(props: TChatItemProps) {
+    super({
+      events: {
+        click: () => {
+          if (props.onSelectChat) {
+            props.onSelectChat(props.id);
+          }
+        },
+      },
+      ...props,
+    });
+  }
   
-    render() {
-      return `
+  render() {
+    return `
         <article class="ChtaItem">
             <div class="ChtaItem__avatar" style="background-image: url({{avatar}})"></div>
             <div class="ChtaItem__content">
@@ -40,8 +43,8 @@ class ChatItem extends Block {
                 <div class="ChtaItem__indicator">{{messageCount}}</div>
             </div>
         </article>
-      `
-    }
+      `;
+  }
 }
 
 export default ChatItem;

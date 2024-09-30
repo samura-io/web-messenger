@@ -4,98 +4,100 @@ import FileInput from '../FileInput/FileInput';
 import FloatButton from '../FloatButton/FloatButton';
 
 type TСorrespondenceFormProps = {
-    onSubmit?: (event: Event) => void;
-    reset?: boolean;
-}
+  onSubmit?: (event: Event) => void;
+  reset?: boolean;
+};
 
 class СorrespondenceForm extends Block {
-    classicInput: ClassicInput;
+  classicInput: ClassicInput;
 
-    constructor(props: TСorrespondenceFormProps) {
-      super({
-        ClassicInput: new ClassicInput({
-            name: 'message',
-            type: 'text',
-            placeholder: 'Сообщение',
-            value: ''
-        }),
-        SendButton: new FloatButton({
-            formType: 'submit',
-            id: 'sendMessage',
-            icon: '/icons/arrow-left.svg',
-        }),
-        CancelButton: new FloatButton({
-          formType: 'button',
-          id: 'sendMessage',
-          icon: '/icons/cancel.svg',
-          onClick: () => {
-            this.handleCancelSelectFile();
-          }
-        }),
-        FileInput: new FileInput({
-            id: 'file',
-            name: 'file',
-            type: 'file',
-            accept: 'image/*',
-            isSelectedFile: false,
-            onChange: (event: Event) => {
-              this.handleChangeFile(event);
-            }
-          }),
-          isSelectedFile: false,
-        events: {
-            submit: (event: Event) => {
-                event.preventDefault();
-                props.onSubmit && props.onSubmit(event);
-            }
+  constructor(props: TСorrespondenceFormProps) {
+    super({
+      ClassicInput: new ClassicInput({
+        name: 'message',
+        type: 'text',
+        placeholder: 'Сообщение',
+        value: '',
+      }),
+      SendButton: new FloatButton({
+        formType: 'submit',
+        id: 'sendMessage',
+        icon: '/icons/arrow-left.svg',
+      }),
+      CancelButton: new FloatButton({
+        formType: 'button',
+        id: 'sendMessage',
+        icon: '/icons/cancel.svg',
+        onClick: () => {
+          this.handleCancelSelectFile();
         },
-        reset: false,
-      });
+      }),
+      FileInput: new FileInput({
+        id: 'file',
+        name: 'file',
+        type: 'file',
+        accept: 'image/*',
+        isSelectedFile: false,
+        onChange: (event: Event) => {
+          this.handleChangeFile(event);
+        },
+      }),
+      isSelectedFile: false,
+      events: {
+        submit: (event: Event) => {
+          event.preventDefault();
+          if (props.onSubmit) {
+            props.onSubmit(event);
+          }
+        },
+      },
+      reset: false,
+    });
 
-      this.classicInput = this.children.ClassicInput;
+    this.classicInput = this.children.ClassicInput;
+  }
+
+  componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+    if (oldProps.reset !== newProps.reset) {
+      this.handleCancelSelectFile();
     }
 
-    componentDidUpdate(oldProps: Props, newProps: Props): boolean {
-        if (oldProps.reset !== newProps.reset) {
-            this.handleCancelSelectFile();
-        }
+    return true;
+  }
 
-        return true;
-    }
+  handleChangeFile(event: Event) {
+    const fileName = (event.target as HTMLInputElement).files?.item(0)?.name;
 
-    handleChangeFile(event: Event) {
-        const fileName = (event.target as HTMLInputElement).files?.item(0)?.name;
+    this.classicInput.setProps({
+      value: fileName,
+      isSelectedFile: true,
+    });
+    this.setProps({
+      isSelectedFile: true,
+    });
+  }
 
-        this.classicInput.setProps({
-          value: fileName,
-          isSelectedFile: true
-        });
-        this.setProps({
-          isSelectedFile: true
-        })
-    }
+  handleCancelSelectFile() {
+    const form = document.forms[0];
 
-    handleCancelSelectFile() {
-        const form = document.forms[0];
+    const fileInput = form.querySelector('input[type="file"]') as HTMLInputElement;
 
-        const fileInput = form.querySelector('input[type="file"]') as HTMLInputElement;
+    this.classicInput.setProps({
+      value: '',
+      isSelectedFile: false,
+    });
+    this.setProps({
+      isSelectedFile: false,
+      reset: false,
+    });
 
-        this.classicInput.setProps({
-          value: '',
-          isSelectedFile: false
-        });
-        this.setProps({
-          isSelectedFile: false,
-          reset: false,
-        })
-
-        fileInput.value = '';
-        form.reset();
-    }
+    fileInput.value = '';
+    form.reset();
+  }
 
 
-    render() {
-      return `
+  render() {
+    return `
             <form class="correspondence__footer" name="correspondenceForm">
                 {{#if isSelectedFile}}
                   {{{ CancelButton }}}
@@ -107,8 +109,8 @@ class СorrespondenceForm extends Block {
                     {{{ SendButton }}}
                 </div>
             </form>
-      `
-    }
+      `;
+  }
 }
 
 export default СorrespondenceForm;

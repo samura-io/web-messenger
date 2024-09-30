@@ -1,23 +1,23 @@
 import Block from '../../framework/Block';
 
 type TClassicInputProps = {
-    name: string;
-    dafvalue?: string;
-    type: string;
-    placeholder: string;
-    isSelectedFile?: boolean;
-    value?: string;
-}
+  name: string;
+  dafvalue?: string;
+  type: string;
+  placeholder: string;
+  isSelectedFile?: boolean;
+  value?: string;
+};
 
 class ClassicInput extends Block {
-    constructor(props: TClassicInputProps) {
-      super({
-        ...props,
-      });
-    }
+  constructor(props: TClassicInputProps) {
+    super({
+      ...props,
+    });
+  }
   
-    render() {
-      return `
+  render() {
+    return `
         <input 
             placeholder="{{placeholder}}" 
             name="{{name}}" 
@@ -26,8 +26,8 @@ class ClassicInput extends Block {
             class="classicInput"
             {{#if isSelectedFile}}disabled{{/if}}
         >
-      `
-    }
+      `;
+  }
 }
 
 export default ClassicInput;
