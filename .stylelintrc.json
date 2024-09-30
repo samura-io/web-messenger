@@ -3,7 +3,5 @@
       "stylelint-config-recommended",
       "stylelint-config-standard"
     ],
-    "rules": {
-      "no-missing-end-of-source-newline": true
-    }
+    "rules": {}
   }
