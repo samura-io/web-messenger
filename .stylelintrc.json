@@ -4,7 +4,6 @@
       "stylelint-config-standard"
     ],
     "rules": {
-      "indentation": 2,
-      "string-quotes": "double"
+      "no-missing-end-of-source-newline": true
     }
   }
