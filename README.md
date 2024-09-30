@@ -4,7 +4,7 @@
 [FIGMA](https://www.figma.com/design/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=1-444&node-type=FRAME&t=Of5cXdyiNZN9ttmo-0)
 
 **Ссылка на проект:**
-[NETLIFY](https://66e1ec420fd73a0008389ceb--symphonious-cuchufli-49a666.netlify.app)
+[NETLIFY](https://deploy--symphonious-cuchufli-49a666.netlify.app)
 
 ## Добро пожаловать в веб-мессенджер!
 Здесь ты сможешь общаться с друзьями и делиться фотографиями, не выходя из браузера.
