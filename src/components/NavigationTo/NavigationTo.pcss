@@ -2,11 +2,16 @@
     color: var(--textGray);
     text-decoration: none; 
     margin-bottom: 23px;
+
     @mixin font 500, 12px, 12px;
     @mixin opacity-transition;
 
-    &_position_left {
+    &_position_right {
         text-align: right;
+    }
+
+    &_position_left {
+        text-align: left;
     }
 
     &:hover {

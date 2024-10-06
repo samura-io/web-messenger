@@ -1,0 +1,85 @@
+.correspondence {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 20px;
+    height: 100%;
+
+    &__header {
+        border-bottom: 1px solid var(--divider);
+        padding-block: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+    }
+
+    &__footer {
+        display: flex;
+        align-items: center;
+        border-top: 1px solid var(--divider);
+        padding-block: 10px;
+        gap: 10px;
+        justify-content: space-between;
+    }
+
+    &__content {
+        padding-block: 10px;
+        flex-grow: 0;
+        overflow-y: auto;
+    }
+
+    &__userInfo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    &__avatar {
+       width: 34px;
+       height: 34px;
+       background-color: var(--bgDarkGray); 
+       border-radius: 50%;
+    }
+
+    &__firstName {
+        @mixin font 600, 13px, 13px;
+    }
+
+    &__showMore {
+        width: 34px;
+        height: 34px;
+        background-color: transparent;
+        background-image: url("/icons/show-more.svg");
+        background-repeat: no-repeat;
+        background-position: center;
+        cursor: pointer;
+
+        @mixin opacity-transition;
+
+        &:hover {
+            @mixin opacity-hover;
+        }
+    }
+
+    &__attachFile {
+        min-width: 32px;
+        height: 32px;
+        background-image: url('/icons/attach-file.svg');
+        cursor: pointer;
+
+        @mixin opacity-transition;
+
+        &_hidden {
+            display: none;
+        }
+
+        &:hover {
+            @mixin opacity-hover;
+        }
+    }
+
+    &__send {
+        rotate: 180deg;
+    }
+}
