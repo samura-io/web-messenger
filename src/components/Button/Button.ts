@@ -14,6 +14,13 @@ type TButtonProps = {
 class Button extends Block {
   constructor(props: TButtonProps) {
     super({
+      events: {
+        click: (e: Event) => {
+          if (props.onClick) {
+            props.onClick(e);
+          }
+        },
+      },
       ...props,
     });
   }

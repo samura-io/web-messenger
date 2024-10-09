@@ -1,3 +1,4 @@
+import { router } from '../../App';
 import Block from '../../framework/Block';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
@@ -82,6 +83,9 @@ class RegisterForm extends Block {
           type: 'link',
           formType: 'button',
           id: 'goToLogin',
+          onClick: () => {
+            router.go('/');
+          },
         }),
       ],
     });

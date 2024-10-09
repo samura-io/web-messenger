@@ -4,6 +4,7 @@ import NavigationTo from '../../components/NavigationTo/NavigationTo';
 import Сorrespondence from '../../components/Сorrespondence/Сorrespondence';
 import { chats, searchableChats } from '../../data/chats';
 import Block from '../../framework/Block';
+import { router } from '../../App';
 // import HTTPTransport from '../../utils/HTTPTransport';
 
 export type TMessage = {
@@ -46,7 +47,8 @@ class MainPage extends Block {
         modifier: 'NavigationTo_position_right',
         id: 'toProfile',
         onClick: (e) => {
-          this.handleCancelSearch(e);
+          e.preventDefault();
+          router.go('/settings');
         },
       }),
       CancelSearch: new NavigationTo({

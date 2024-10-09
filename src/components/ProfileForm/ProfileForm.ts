@@ -179,9 +179,6 @@ class ProfileForm extends Block {
     });
   }
 
-  componentDidMount(): void {
-
-  }
 
   initValidation() {
     const validation = new Validation('ProfileForm');

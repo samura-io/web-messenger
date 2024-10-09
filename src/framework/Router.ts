@@ -42,10 +42,14 @@ class Router {
   
 
   _onRoute(pathname: string) {
-    const route = this.getRoute(pathname);
+    let route: Route | undefined = this.getRoute(pathname);
 
     if (!route) {
-      return;
+      route = this.getRoute('*');
+
+      if (!route) {
+        return;
+      }
     }
 
     if (this._currentRoute) {

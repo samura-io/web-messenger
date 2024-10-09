@@ -7,7 +7,16 @@ type TRouteProps<T = unknown> = {
 const render = (query: string, block: Block) => {
   const root = document.querySelector(query);
   root?.appendChild(block.getContent());
+  block.dispatchComponentDidMount();
   return root;
+};
+
+const unmount = (query: string) => {
+  const root = document.querySelector(query);
+  
+  if (root) {
+    root.innerHTML = '';
+  }
 };
 
 class Route {
@@ -47,12 +56,20 @@ class Route {
       return;
     }
 
-    this._block.show();
+    if (typeof this._props.rootQuery === 'string') {
+      render(this._props.rootQuery, this._block);
+    }
   }
 
   public leave() {
     if (this._block) {
+
       this._block.hide();
+      this._block.removeEvents();
+      
+      if (typeof this._props.rootQuery === 'string') {
+        unmount(this._props.rootQuery);
+      }
     }
   }
 }

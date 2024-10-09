@@ -18,6 +18,7 @@ class Block {
     FLOW_CDM: 'flow:component-did-mount',
     FLOW_CDU: 'flow:component-did-update',
     FLOW_RENDER: 'flow:render',
+    FLOW_UNMOUNT: 'flow:component-will-unmount',
   };
   
   private _element: HTMLElement | null = null;
@@ -53,6 +54,7 @@ class Block {
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+    eventBus.on(Block.EVENTS.FLOW_UNMOUNT, this._componentWillUnmount.bind(this));
   }
   
   init() {  
@@ -84,7 +86,10 @@ class Block {
     return { props, children, lists };
   }
   
-  componentDidMount() {}
+  componentDidMount(): void | (() => void) {
+    return () => {
+    };
+  }
   
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
@@ -105,6 +110,8 @@ class Block {
   }
 
   removeEvents() {
+    this.eventBus().emit(Block.EVENTS.FLOW_UNMOUNT);
+
     const { events } = this.props;
     if (!events) {
       return;
@@ -115,6 +122,13 @@ class Block {
         this._element.removeEventListener(eventName, events[eventName]);
       }
     });
+  }
+
+  _componentWillUnmount() {
+    const fallback = this.componentDidMount();
+    if (typeof fallback === 'function') {
+      fallback();
+    }
   }
   
   _componentDidUpdate(oldProps: Props, newProps: Props) {
@@ -252,11 +266,11 @@ class Block {
   }
   
   show() {
-    this.getContent().style.display = 'block';
+
   }
   
   hide() {
-    this.getContent().style.display = 'none';
+
   }
 }
 

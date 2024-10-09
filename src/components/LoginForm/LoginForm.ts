@@ -1,3 +1,4 @@
+import { router } from '../../App';
 import Block from '../../framework/Block';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
@@ -35,6 +36,9 @@ class LoginForm extends Block {
           type: 'link',
           formType: 'button',
           id: 'noAccount',
+          onClick: () => {
+            router.go('/sign-up');
+          },
         }),
       ],
     });
