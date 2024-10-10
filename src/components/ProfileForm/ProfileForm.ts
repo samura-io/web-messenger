@@ -1,4 +1,6 @@
+import UserController from '../../controllers/UserController';
 import Block from '../../framework/Block';
+import connect from '../../utils/connect';
 import Validation from '../../utils/validation';
 import Button from '../Button/Button';
 import EditableAvatar from '../EditableAvatar/EditableAvatar';
@@ -157,10 +159,11 @@ class ProfileForm extends Block {
         }),
       ],
       SaveButton: new Button({
-        label: 'Сохранить',
+        label: 'Сохранить2',
         formType: 'submit',
         id: 'saveProfileData',
         type: 'primary',
+        onClick: (e) => this.testStore(e),
       }),
       Popup: new Popup({
         changeAvatar: true,
@@ -176,6 +179,7 @@ class ProfileForm extends Block {
       isChangeAvatar: props.isChangeAvatar,
       isChangePassword: props.isChangePassword,
       isDisabled: props.isDisabled,
+      name: 'Никита',
     });
   }
 
@@ -228,6 +232,12 @@ class ProfileForm extends Block {
       isChangeAvatar: false,
     });
   }
+
+  testStore(e: Event) {
+    e.preventDefault();
+    const userController = new UserController();
+    userController.getUser();
+  }
   
   render() {
     return `
@@ -261,4 +271,5 @@ class ProfileForm extends Block {
   }
 }
 
-export default ProfileForm;
+const withUser = connect(state => ({ user: state.user }));
+export default withUser(ProfileForm);
