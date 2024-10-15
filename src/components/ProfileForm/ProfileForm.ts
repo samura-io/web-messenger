@@ -1,21 +1,27 @@
+import AuthController from '../../controllers/AuthController';
 import UserController from '../../controllers/UserController';
-import Block from '../../framework/Block';
+import Block, { Props } from '../../framework/Block';
+import Router from '../../framework/Router';
+import Store from '../../framework/Store';
 import connect from '../../utils/connect';
+import isEqual from '../../utils/isEqual';
 import Validation from '../../utils/validation';
 import Button from '../Button/Button';
 import EditableAvatar from '../EditableAvatar/EditableAvatar';
 import EditableEntry from '../EditableEntry/EditableEntry';
 import Popup from '../Popup/Popup';
 
-type TProfileFormProps = {
-  isChangeAvatar: boolean;
-  isChangePassword: boolean;
-  isDisabled: boolean;
-  onChangeData?: (isChage: boolean) => void;
-};
-
 class ProfileForm extends Block {
-  constructor(props: TProfileFormProps) {
+  saveButton: Button;
+
+  editableAvatar: EditableAvatar;
+
+  form: HTMLFormElement | null;
+
+  popup: Popup;
+
+  constructor(props: Props) {
+    
     super({
       EditableAvatar: new EditableAvatar({
         onClick: () => {
@@ -26,7 +32,7 @@ class ProfileForm extends Block {
         new EditableEntry({
           label: 'Старый пароль',
           type: 'password',
-          name: 'password-old',
+          name: 'oldPassword',
           required: true,
           onlyStandartValidate: true,
         }),
@@ -47,45 +53,14 @@ class ProfileForm extends Block {
           maxLength: 40,
         }),
       ],
-      ProfileFields: [
-        new EditableEntry({
-          label: 'Почта',
-          value: 'example@ex.com',
-          disabled: true,
-        }),
-        new EditableEntry({
-          label: 'Логин',
-          value: 'ivanivanov',
-          disabled: true,
-        }),
-        new EditableEntry({
-          label: 'Имя',
-          value: 'Иван',
-          disabled: true,
-        }),
-        new EditableEntry({
-          label: 'Фамилия',
-          value: 'Иванов',
-          disabled: true,
-        }),
-        new EditableEntry({
-          label: 'Имя в чате',
-          value: 'Иван',
-          disabled: true,
-        }),
-        new EditableEntry({
-          label: 'Телефон',
-          value: '+79099673030',
-          disabled: true,
-        }),
-      ],
       ProfileForm: [
         new EditableEntry({
           label: 'Почта',
           type: 'text',
           name: 'email',
-          value: 'example@ex.com',
+          value: 'example@ex.com1wd',
           required: true,
+          disabled: true,
         }),
         new EditableEntry({
           label: 'Логин',
@@ -95,6 +70,7 @@ class ProfileForm extends Block {
           required: true,
           minLength: 3,
           maxLength: 20,
+          disabled: true,
         }),
         new EditableEntry({
           label: 'Имя',
@@ -104,6 +80,7 @@ class ProfileForm extends Block {
           required: true,
           minLength: 2,
           maxLength: 30,
+          disabled: true,
         }),
         new EditableEntry({
           label: 'Фамилия',
@@ -113,13 +90,7 @@ class ProfileForm extends Block {
           required: true,
           minLength: 3,
           maxLength: 40,
-        }),
-        new EditableEntry({
-          label: 'Имя в чате',
-          type: 'text',
-          name: 'display_name',
-          value: 'Иван',
-          required: true,
+          disabled: true,
         }),
         new EditableEntry({
           label: 'Телефон',
@@ -129,6 +100,7 @@ class ProfileForm extends Block {
           required: true,
           maxLength: 15,
           minLength: 10,
+          disabled: true,
         }),
       ],
       ChangeDataButtons: [
@@ -156,110 +128,195 @@ class ProfileForm extends Block {
           id: 'logout',
           danger: true,
           type: 'link',
+          onClick: () => {
+            this.handleLogOut();
+          },
         }),
       ],
       SaveButton: new Button({
-        label: 'Сохранить2',
+        label: 'Сохранить',
         formType: 'submit',
         id: 'saveProfileData',
         type: 'primary',
-        onClick: (e) => this.testStore(e),
+      }),
+      CancelChangeDataButton: new Button({
+        label: 'Отменить',
+        formType: 'button',
+        type: 'link',
+        events: {
+          click: () => this.handleIsChangeData(true),
+        },
       }),
       Popup: new Popup({
         changeAvatar: true,
         isEnableOverlay: true,
-        submitChangeAvatar: (event, form) => this.handleSubmitChangeAvatar(event, form),
+        onClose: (value: boolean) => this.handleClosePopup(value),
       }),
-      ChangePasswordButton: new Button({
-        label: 'Сохранить',
-        formType: 'submit',
-        id: 'savePassword',
-        type: 'primary',
+      CancelChangePasswordButton: new Button({
+        label: 'Отменить',
+        formType: 'button',
+        type: 'link',
+        onClick: () => this.handleIsChangePassword(false),
       }),
-      isChangeAvatar: props.isChangeAvatar,
-      isChangePassword: props.isChangePassword,
-      isDisabled: props.isDisabled,
-      name: 'Никита',
+      isChangeAvatar: false,
+      isChangePassword: false,
+      isDisabled: true,
+      user: {},
+      ...props,
     });
+
+    this.saveButton = this.children.SaveButton;
+    this.editableAvatar  = this.children.EditableAvatar;
+    this.popup = this.children.Popup as Popup;
+    this.form = null;
   }
 
+  componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+
+    if (!isEqual(oldProps?.user || {}, newProps.user || {})) {
+      const oldInputsList = this.lists.ProfileForm;
+      oldInputsList.forEach((input: EditableEntry) => {
+        input.setProps({
+          value: newProps.user?.[input.props.name as keyof typeof newProps.user],
+        });
+      });
+      this.editableAvatar.setProps({
+        avatar: (newProps.user as { avatar: string })?.avatar,
+      });
+    }
+
+    if (oldProps.isDisabled !== newProps.isDisabled) {
+      const oldInputsList = this.lists.ProfileForm;
+      oldInputsList.forEach((input: EditableEntry) => {
+        input.setProps({
+          disabled: newProps.isDisabled,
+        });
+      });
+    }
+    return true;
+  }
+
+  componentDidMount(): void {
+    this.initValidation();
+  }
 
   initValidation() {
     const validation = new Validation('ProfileForm');
-    const form = validation.form;
-    form?.addEventListener('validationSuccess', (e: Event)=>{
-      this.handleValidSubmit(e as CustomEvent, form);
+    this.form = validation.form;
+    this.form?.addEventListener('validationSuccess', (e: Event)=>{
+      this.handleValidSubmit(e as CustomEvent);
     });
   }
 
-  handleValidSubmit(event: CustomEvent, form: HTMLFormElement) {
-    const fieldsData = event.detail.fields;
-    console.log(`Обновляем данные пользователя: ${JSON.stringify(fieldsData)}`);
-    form.reset();
-    this.setProps({
-      isDisabled: true,
-      isChangePassword: false,
+  async handleValidSubmit(event: CustomEvent) {
+
+    this.saveButton.setProps({
+      disabled: true,
+      label: 'Загрузка...',
     });
+
+    const fieldsData = event.detail.fields;
+    
+    try {
+      if ('password' in fieldsData) {
+        fieldsData.newPassword = fieldsData.password;
+        await UserController.changePassword(fieldsData);
+      } else {
+        await UserController.changeProfile(fieldsData);
+      }
+
+      this.handleIsChangeData(true);
+      this.handleIsChangePassword(false);
+
+      this.resetForm();
+    } catch (e) {
+    
+    }
+    
+
+    this.saveButton.setProps({
+      disabled: false,
+      label: 'Сохранить',
+    });
+
+    this.initValidation();
   }
 
   handleIsChangeData(value: boolean) {
     this.setProps({
       isDisabled: value,
+      user: { ...this.props.user as { [key: string]: any }, errorMessage: '' },
     });
     this.initValidation();
+    this.resetForm();
+  }
+
+  handleClosePopup(value: boolean) {
+    this.setProps({
+      isChangeAvatar: !value,
+    });
   }
 
   handleIsChangePassword(value: boolean) {
     this.setProps({
       isChangePassword: value,
+      user: { ...this.props.user as { [key: string]: any }, errorMessage: '' },
     });
     this.initValidation();
+    this.resetForm();
   }
 
   handleIsChangeAvatar(value: boolean) {
+    Store.set('user', { formDataError: '' });
+    const popup = this.popup;
+    const changeAvatar = popup.children.ChangeAvatar;
+    changeAvatar.setProps({
+      label: 'Выбрать файл',
+      hasFile: false,
+    });
     this.setProps({
       isChangeAvatar: value,
     });
   }
 
-  handleSubmitChangeAvatar(event: Event, form: HTMLFormElement) {
-    event.preventDefault();
-    const target = event.target as HTMLFormElement;
-    const formData = new FormData(target);
-    console.log('Отправляем файл:', formData.get('file'));
-    form.reset();
-    this.setProps({
-      isChangeAvatar: false,
-    });
+  resetForm() {
+    if (this.form) {
+      this.form.reset();
+    }
   }
 
-  testStore(e: Event) {
-    e.preventDefault();
-    const userController = new UserController();
-    userController.getUser();
+  async handleLogOut() {
+    try {
+      await AuthController.logout();
+      const router = new Router('#app');
+      router.go('/');
+    } catch (error) {
+      console.error(error);
+    }
   }
   
   render() {
+    
     return `
           <form class="ProfileForm" name="ProfileForm" novalidate>
               {{{ EditableAvatar }}}
-              <span class="ProfileForm__name">{{name}}</span>
+              <span class="ProfileForm__name">{{user.first_name}}</span>
               {{#if isChangePassword}}
                   {{{ ChangePasswordForm }}}
+                   <span class="ProfileForm__error">{{ user.errorMessage }}</span>
                       <div class="ProfileForm__footer">
-                          {{{ ChangePasswordButton }}}
+                          {{{ SaveButton }}}
+                          {{{ CancelChangePasswordButton }}}
                       </div>
               {{else}}
-                  {{#if isDisabled}}
-                          {{{ ProfileFields }}}
-                      {{else}}
                           {{{ ProfileForm }}}
-                      {{/if}}
+                          <span class="ProfileForm__error">{{ user.errorMessage }}</span>
                   <div class="ProfileForm__footer">
                       {{#if isDisabled}}
                           {{{ ChangeDataButtons }}}
                       {{else}}
                           {{{ SaveButton }}}
+                          {{{ CancelChangeDataButton }}}
                       {{/if}}
                   </div>
               {{/if}}

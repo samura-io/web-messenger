@@ -9,14 +9,8 @@ import RegisterPage from './pages/register/RegisterPage';
 export const router = new Router('#app');
 
 export default class App {
-  state: { [key: string]: unknown };
 
   constructor() {
-    this.state = {
-      currentPage: '/',
-      searchable: false,
-    };
-
     router
       .use('/messenger', MainPage)
       .use('/', LoginPage)

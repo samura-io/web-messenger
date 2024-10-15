@@ -2,6 +2,7 @@ import { router } from '../../App';
 import FloatButton from '../../components/FloatButton/FloatButton';
 import ProfileForm from '../../components/ProfileForm/ProfileForm';
 import Block from '../../framework/Block';
+import withAuth from '../../utils/withAuth';
 
 class ProfilePage extends Block {
   constructor() {
@@ -13,11 +14,7 @@ class ProfilePage extends Block {
           router.go('/messenger');
         },
       }),
-      ProfileForm: new ProfileForm({
-        isChangeAvatar: false,
-        isChangePassword: false,
-        isDisabled: true,
-      }),
+      ProfileForm: new ProfileForm({}),
     });
   }
 
@@ -51,4 +48,4 @@ class ProfilePage extends Block {
   }
 }
 
-export default ProfilePage;
+export default withAuth(ProfilePage);

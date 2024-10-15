@@ -1,18 +1,28 @@
-import { BaseApi } from './BaseApi';
+import { TOptopns } from '../utils/HTTPTransport';
+import BaseApi from './BaseApi';
 
-class UserApi extends BaseApi {
-  request() {
+class UserAPI extends BaseApi {
 
-    // тут представим какой-то запрос к серверу, который возвращает:
-    return {
-      email: 'sGvGq@example.com',
-      login: 'nikita',
-      firstName: 'Никита',
-      secondName: 'Иванов',
-      displayName: 'Никита Иванов',
-      phone: '+7 (999) 999-99-99',
-    };
+  constructor() {
+    super('https://ya-praktikum.tech/api/v2/user/');
   }
+    
+  changeProfile(request: TOptopns) {
+    return this.http.put('profile', request);
+  }
+ 
+  changeAvatar(request: TOptopns) {
+    return this.http.put('profile/avatar', request);
+  }
+
+  changePassword(request: TOptopns) {
+    return this.http.put('password', request);
+  }
+
+  search(request: TOptopns) {
+    return this.http.post('search', request);
+  }
+
 }
 
-export default UserApi;
+export default new UserAPI;

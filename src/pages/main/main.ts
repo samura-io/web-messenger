@@ -5,7 +5,6 @@ import Сorrespondence from '../../components/Сorrespondence/Сorrespondence';
 import { chats, searchableChats } from '../../data/chats';
 import Block from '../../framework/Block';
 import { router } from '../../App';
-// import HTTPTransport from '../../utils/HTTPTransport';
 
 export type TMessage = {
   time: string;
@@ -116,26 +115,6 @@ class MainPage extends Block {
       isSelectChat: true,
     });
   }
-
-  // тетстируем HTTPTransport
-
-  // async componentDidMount(): Promise<void> {
-  //   const KenyeWestQuotes = await HTTPTransport.get('https://api.kanye.rest');
-  //   if (KenyeWestQuotes.status === 200) {
-  //     console.log(KenyeWestQuotes.response);
-  //   }
-
-  //   const createdSomeUser = await HTTPTransport.post('https://reqres.in/api/users', {
-  //     data: {
-  //       name: 'John',
-  //       job: 'leader',
-  //     },
-  //   })
-  //   if (createdSomeUser.status === 201) {
-  //     console.log(createdSomeUser.response);
-  //   }
-  // }
-
   
   render() {
     return `

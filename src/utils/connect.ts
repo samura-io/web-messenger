@@ -5,7 +5,7 @@ import isEqual from './isEqual';
 function connect(mapStateToProps: (state: Indexed) => Indexed) {
   return function (Component: typeof Block) {
     return class extends Component {
-      constructor(props: Props[]) {
+      constructor(props: Props) {
         let state = mapStateToProps(store.getState());
 
         super({ ...props, ...state });
@@ -15,7 +15,6 @@ function connect(mapStateToProps: (state: Indexed) => Indexed) {
 
           if (!isEqual(this.props, newState)) {
             this.setProps({ ...newState });
-            console.log(this.props, { ...newState });
           }
 
           state = newState;

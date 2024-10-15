@@ -1,6 +1,7 @@
 import EventBus from './EventBus';
 import { v4 as makeUUID } from 'uuid';
 import Handlebars from 'handlebars';
+import cloneDeep from '../utils/cloneDeep';
 
 export type Props = {
   [key: string]: unknown;
@@ -25,13 +26,13 @@ class Block {
 
   private eventBus: () => EventBus;
 
-  private lists: { [key: string]: Block[] } = {};
+  public lists: { [key: string]: Block[] } = {};
   
   protected _id: string | null = null;
 
-  protected props: Props;
+  public props: Props;
 
-  protected children: { [key: string]: Block } = {};
+  public children: { [key: string]: Block } = {};
 
   
   constructor(propsWithChildren: Props = {}) {
@@ -173,6 +174,8 @@ class Block {
     Object.assign(this.props, props);
     Object.assign(this.lists, lists);
     Object.assign(this.children, children);
+
+    this._render();
   };
   
   get element() {
@@ -226,6 +229,7 @@ class Block {
   }
   
   render(): string {
+    alert();
     return '';
   }
   
@@ -247,10 +251,10 @@ class Block {
         return typeof value === 'function' ? value.bind(target) : value;
       },
       set(target, prop: string, value) {
-        const oldProps = { ...target };
-        target[prop] = value;
-        const newProps = { ...target };
-
+        const oldProps = cloneDeep(target); 
+        target[prop] = cloneDeep(value);
+        const newProps = cloneDeep(target);
+  
         self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, newProps);
         return true;
       },
@@ -258,6 +262,10 @@ class Block {
         throw new Error('Нет доступа');
       },
     });
+  }
+
+  createRef(elementId: string) {
+    return this._element?.querySelector(`#${elementId}`) || this._element;
   }
 
   _createDocumentElement(tagName: string) {

@@ -5,17 +5,22 @@ const enum METHODS {
   DELETE = 'DELETE',
 }
 
-type TOptopns = {
+export type TOptopns = {
   method?: string;
   headers?: Record<string, string>;
-  data?: Record<string, unknown>;
+  data?: Record<string, unknown> | FormData;
   timeout?: number;
+  isFile?: boolean;
 };
   
 
-function queryStringify(data: TOptopns['data']) {
+function queryStringify(data: TOptopns['data'] | FormData) {
   if (typeof data !== 'object') {
     throw new Error('Data must be object');
+  }
+
+  if (data instanceof FormData) {
+    return;  
   }
   
   const keys = Object.keys(data);
@@ -26,25 +31,30 @@ function queryStringify(data: TOptopns['data']) {
 }
   
 class HTTPTransport {
+  API_URL: string = '';
 
-  static get = (url: string, options?: TOptopns) => {
-    return this._request(url, { ...options, method: METHODS.GET }, options?.timeout);
+  constructor({ API_URL }: { API_URL: string }) {
+    this.API_URL = API_URL;
+  }
+
+  public get = (path: string, options?: TOptopns) => {
+    return this._request(this.API_URL + path, { ...options, method: METHODS.GET }, options?.timeout);
   };
   
-  static post = (url: string, options: TOptopns) => {
-    return this._request(url, { ...options, method: METHODS.POST }, options.timeout);
+  public post = (path: string, options: TOptopns) => {
+    return this._request(this.API_URL + path, { ...options, method: METHODS.POST }, options.timeout);
   };
     
-  static put = (url: string, options: TOptopns) => {
-    return this._request(url, { ...options, method: METHODS.PUT }, options.timeout);
+  public put = (path: string, options: TOptopns) => {
+    return this._request(this.API_URL + path, { ...options, method: METHODS.PUT }, options.timeout);
   };
     
-  static delete = (url: string, options: TOptopns) => { 
-    return this._request(url, { ...options, method: METHODS.DELETE }, options.timeout);
+  public delete = (path: string, options: TOptopns) => { 
+    return this._request(this.API_URL + path, { ...options, method: METHODS.DELETE }, options.timeout);
   };
     
-  private static _request = (url: string, options: TOptopns, timeout = 5000): Promise<XMLHttpRequest> => {
-    const { headers = {}, method, data } = options;
+  private _request = (url: string, options: TOptopns, timeout = 5000): Promise<XMLHttpRequest> => {
+    const { headers = {}, method, data, isFile } = options;
   
     return new Promise(function (resolve, reject) {
       if (!method) {
@@ -62,13 +72,23 @@ class HTTPTransport {
           ? `${url}${queryStringify(data)}`
           : url,
       );
+
+      if (!isFile) {
+        headers['Content-Type'] = 'application/json';
+      }
+  
+      xhr.withCredentials = true;
   
       Object.keys(headers).forEach(key => {
         xhr.setRequestHeader(key, headers[key]);
       });
   
       xhr.onload = function () {
-        resolve(xhr);
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(xhr);
+        } else {
+          reject(xhr);
+        }
       };
   
       xhr.onabort = reject;
@@ -79,6 +99,8 @@ class HTTPTransport {
   
       if (isGet || !data) {
         xhr.send();
+      } else if (isFile) {
+        xhr.send(data as FormData);
       } else {
         xhr.send(JSON.stringify(data));
       }

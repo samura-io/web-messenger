@@ -1,11 +1,17 @@
-export class BaseApi {
+import HTTPTransport from '../utils/HTTPTransport';
 
-  create() { throw new Error('Method not implemented.'); }
+export interface ApiError {
+  status: number;
+  message?: string; // You can add other properties if needed
+}
 
-  update() { throw new Error('Method not implemented.'); }
+class BaseApi {
+  protected http: HTTPTransport;
 
-  delete() { throw new Error('Method not implemented.'); }
-
-  request() { throw new Error('Method not implemented.'); }
+  protected constructor(url: string) {
+    this.http = new HTTPTransport({ API_URL: url });        
+  }
 
 }
+
+export default BaseApi;
