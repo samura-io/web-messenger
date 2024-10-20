@@ -1,21 +1,19 @@
-import Block from '../../framework/Block';
+import UserController from '../../controllers/UserController';
+import Block, { Props } from '../../framework/Block';
+import connect from '../../utils/connect';
 import Button from '../Button/Button';
 import FileInput from '../FileInput/FileInput';
 
 type TChangeAvatarProps = {
-  submitChangeAvatar?: (event: Event, form: HTMLFormElement) => void;
+  onFinish?: () => void;
 };
 
 class ChangeAvatar extends Block {
+  submitButton: Button;
+
   constructor(props: TChangeAvatarProps) {
     super({
       SubmitButton: new Button({
-        label: 'Поменять',
-        type: 'primary',
-        formType: 'submit',
-        id: 'submit',
-      }),
-      DisabledButton: new Button({
         label: 'Поменять',
         type: 'primary',
         formType: 'submit',
@@ -24,24 +22,24 @@ class ChangeAvatar extends Block {
       }),
       events: {
         submit: (event: Event) => {
-          if (props.submitChangeAvatar) {
-            props.submitChangeAvatar(event, event.target as HTMLFormElement);
-          }
-          this.handleResetToInit();
+          this.handleSubmitChangeAvatar(event);
         },
       }, 
       FileInput: new FileInput({
         id: 'file',
-        name: 'file',
+        name: 'avatar',
         type: 'file',
         accept: 'image/*',
         onChange: (event: Event) => {
           this.handleChangeFile(event);
         },
       }),
-      label: 'Выбрать файл на компьютере',
+      label: 'Выбрать файл',
       hasFile: false,
+      ...props,
     });
+
+    this.submitButton = this.children.SubmitButton;
   }
 
   handleChangeFile(e: Event) {
@@ -54,11 +52,37 @@ class ChangeAvatar extends Block {
     }
   }
 
-  handleResetToInit() {
-    this.setProps({ 
-      label: 'Выбрать файл на компьютере',
-      hasFile: false,
-    });
+  componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+    if (oldProps.hasFile !== newProps.hasFile) {
+      this.submitButton.setProps({ disabled: !newProps.hasFile });
+    }
+    return true;
+  }
+
+  async handleSubmitChangeAvatar(event: Event) {
+    this.submitButton.setProps({ disabled: true, label: 'Загрузка...' });
+
+    event.preventDefault();
+    const target = event.target as HTMLFormElement;
+    const formData = new FormData(target);
+    try {
+      await UserController.changeAvatar(formData);
+
+      if (this.props.onFinish) {
+        (this.props.onFinish as () => void)();
+      }
+      
+      if (this.props.onFinish) {
+        (this.props.onFinish as () => void)();
+      }
+      this.submitButton.setProps({ disabled: true, label: 'Поменять' });
+    } catch (error) {
+      console.error(error);
+      this.submitButton.setProps({ disabled: false, label: 'Поменять' });
+    }
+    
+
+    target.reset();
   }
       
   
@@ -70,14 +94,12 @@ class ChangeAvatar extends Block {
             <label for="file" class="ChangeAvatar__label">{{{label}}}</label>
             {{{FileInput}}}
             </div>
-            {{#if hasFile }}
+            <span class="ChangeAvatar__error">{{ user.formDataError }}</span>
             {{{SubmitButton}}}
-            {{else}}
-            {{{DisabledButton}}}
-            {{/if}}
         </form>   
       `;
   }
 }
 
-export default ChangeAvatar;
+const withUser = connect(state => ({ user: state.user }));
+export default withUser(ChangeAvatar);

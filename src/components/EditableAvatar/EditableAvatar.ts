@@ -21,8 +21,8 @@ class EditableAvatar extends Block {
   
   render() {
     return `
-          <div class="EditableAvatar"></div>
-      `;
+      <div class="EditableAvatar" style="background-image: url('https://ya-praktikum.tech/api/v2/resources{{avatar}}');"></div>
+    `;
   }
 }
 

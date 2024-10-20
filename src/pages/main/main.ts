@@ -1,10 +1,16 @@
-import Chat from '../../components/Chat/Chat';
+import Chat, { Chat as ChatInterface } from '../../components/Chat/Chat';
 import SearchableInput from '../../components/SearchableInput/SearchableInput';
 import NavigationTo from '../../components/NavigationTo/NavigationTo';
-import Сorrespondence from '../../components/Сorrespondence/Сorrespondence';
+import Correspondence from '../../components/Correspondence/Correspondence';
 import { chats, searchableChats } from '../../data/chats';
 import Block from '../../framework/Block';
-// import HTTPTransport from '../../utils/HTTPTransport';
+import { router } from '../../App';
+import withoutAuth from '../../utils/withoutAuth';
+import connect from '../../utils/connect';
+import Button from '../../components/Button/Button';
+import Popup from '../../components/Popup/Popup';
+import CreateChat from '../../components/CreateChat/CreateChat';
+import ChatsController, { defaultChat, TChatTokenResponse } from '../../controllers/ChatsController';
 
 export type TMessage = {
   time: string;
@@ -34,9 +40,11 @@ export type TsearchableChat = {
 
 
 class MainPage extends Block {
-  chatComponent: Chat;
+  chatComponent: ChatInterface;
 
-  correspondence: Сorrespondence;
+  popup: Popup;
+
+  correspondence: Correspondence;
     
   constructor() {
     super({
@@ -46,7 +54,8 @@ class MainPage extends Block {
         modifier: 'NavigationTo_position_right',
         id: 'toProfile',
         onClick: (e) => {
-          this.handleCancelSearch(e);
+          e.preventDefault();
+          router.go('/settings');
         },
       }),
       CancelSearch: new NavigationTo({
@@ -66,23 +75,40 @@ class MainPage extends Block {
           this.handleSearchEnable();
         },
       }),
-      Chat: new Chat({
+      ChatComponent: new Chat({
         chats: chats,
         searchable: false,
         searchableChats: searchableChats,
-        onSelectChat: (chat: string) => {
-          this.handleSelectChat(chat);
+        onSelectChat: (chat: number, chatInfo: TChat) => {
+          this.handleSelectChat(chat, chatInfo);
         },
       }),
-      Сorrespondence: new Сorrespondence({
-        chatInfo: chats[0],
+      Correspondence: new Correspondence({
+        chatId: 0,
+        token: '',
+        chatInfo: defaultChat,
+        loading: true,
+        messageList: [],
+      }),
+      CreateChatButton: new Button({
+        label: 'Создать чат',
+        type: 'primary',
+        formType: 'button',
+        onClick: () => {
+          this.handleOpenPopup();
+        },
+      }),
+      Popup: new Popup({
+        open: false,
+        component: CreateChat,
       }),
       searchable: false,
       isSelectChat: false,
     });
 
     this.chatComponent = this.children.Chat;
-    this.correspondence = this.children.Сorrespondence as Сorrespondence;
+    this.popup = this.children.Popup as Popup;
+    this.correspondence = this.children.Correspondence as Correspondence;
       
   }
 
@@ -95,6 +121,11 @@ class MainPage extends Block {
     });
   }
 
+  handleOpenPopup() {
+    this.popup.setProps({ open: true, isEnableOverlay: true  });
+  }
+  
+
   handleCancelSearch(e: Event) {
     e.preventDefault();
     this.chatComponent.setProps({
@@ -105,58 +136,52 @@ class MainPage extends Block {
     });
   }
 
-  handleSelectChat(chatId: string) {
-    const currentChat = chats.find((item) => item.id === chatId);
+  async handleSelectChat(chatId: number, chatInfo: TChat) {
     this.correspondence.setProps({
-      chatInfo: currentChat,
+      loading: true,
     });
-    this.setProps({
-      isSelectChat: true,
-    });
+    try {
+      const res = await ChatsController.getWebSocketsToken({ data: {} }, chatId) as TChatTokenResponse;
+
+      const newCorrespondenceProps = {
+        chatId,
+        token: res.token,
+        chatInfo,
+      };
+      this.correspondence.setProps({
+        ...newCorrespondenceProps,
+      });
+      this.setProps({
+        isSelectChat: true,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
-
-  // тетстируем HTTPTransport
-
-  // async componentDidMount(): Promise<void> {
-  //   const KenyeWestQuotes = await HTTPTransport.get('https://api.kanye.rest');
-  //   if (KenyeWestQuotes.status === 200) {
-  //     console.log(KenyeWestQuotes.response);
-  //   }
-
-  //   const createdSomeUser = await HTTPTransport.post('https://reqres.in/api/users', {
-  //     data: {
-  //       name: 'John',
-  //       job: 'leader',
-  //     },
-  //   })
-  //   if (createdSomeUser.status === 201) {
-  //     console.log(createdSomeUser.response);
-  //   }
-  // }
-
   
   render() {
     return `
             <main class="main">
                 <div class="main__asideLeft">
-                    {{#if searchable}}
-                      {{{CancelSearch}}}
-                    {{else}}
-                      {{{ NavigationTo }}}
-                    {{/if}}
-                    {{{ SearchableInput }}}
-                    {{{ Chat }}}
+                {{{ NavigationTo }}}
+                <div class="main__topContainer">
+                    {{{ CreateChatButton }}}
+                  </div>
+                    {{{ ChatComponent }}}
                 </div>
                 <div class="main__asideRight">
                     {{#if isSelectChat}}
-                      {{{ Сorrespondence }}}
+                      {{{ Correspondence }}}
                     {{else}}
                       <span class="main__plug">Выберите чат чтобы отправить сообщение</span>
                     {{/if}}
                 </div>
+                {{{ Popup }}}
             </main>
         `;
   }
 }
 
-export default MainPage;
+const withUser = connect(state => ({ user: state.user }));
+const unprotectedComponent = withUser(MainPage);
+export default withoutAuth(unprotectedComponent);
