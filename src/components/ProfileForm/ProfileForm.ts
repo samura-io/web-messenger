@@ -4,9 +4,9 @@ import Block, { Props } from '../../framework/Block';
 import Router from '../../framework/Router';
 import Store from '../../framework/Store';
 import connect from '../../utils/connect';
-import isEqual from '../../utils/isEqual';
 import Validation from '../../utils/validation';
 import Button from '../Button/Button';
+import ChangeAvatar from '../ChangeAvatar/ChangeAvatar';
 import EditableAvatar from '../EditableAvatar/EditableAvatar';
 import EditableEntry from '../EditableEntry/EditableEntry';
 import Popup from '../Popup/Popup';
@@ -25,7 +25,7 @@ class ProfileForm extends Block {
     super({
       EditableAvatar: new EditableAvatar({
         onClick: () => {
-          this.handleIsChangeAvatar(true);
+          this.handleOpenPopup();
         },
       }),
       ChangePasswordForm: [
@@ -148,9 +148,8 @@ class ProfileForm extends Block {
         },
       }),
       Popup: new Popup({
-        changeAvatar: true,
-        isEnableOverlay: true,
-        onClose: (value: boolean) => this.handleClosePopup(value),
+        open: false,
+        component: ChangeAvatar,
       }),
       CancelChangePasswordButton: new Button({
         label: 'Отменить',
@@ -158,7 +157,6 @@ class ProfileForm extends Block {
         type: 'link',
         onClick: () => this.handleIsChangePassword(false),
       }),
-      isChangeAvatar: false,
       isChangePassword: false,
       isDisabled: true,
       user: {},
@@ -173,7 +171,7 @@ class ProfileForm extends Block {
 
   componentDidUpdate(oldProps: Props, newProps: Props): boolean {
 
-    if (!isEqual(oldProps?.user || {}, newProps.user || {})) {
+    if (newProps?.user) {
       const oldInputsList = this.lists.ProfileForm;
       oldInputsList.forEach((input: EditableEntry) => {
         input.setProps({
@@ -197,7 +195,15 @@ class ProfileForm extends Block {
   }
 
   componentDidMount(): void {
+
+    this.setProps({
+      user: Store.getState().user,
+    });
     this.initValidation();
+  }
+  
+  handleOpenPopup() {
+    this.popup.setProps({ open: true, isEnableOverlay: true  });
   }
 
   initValidation() {
@@ -251,12 +257,6 @@ class ProfileForm extends Block {
     this.resetForm();
   }
 
-  handleClosePopup(value: boolean) {
-    this.setProps({
-      isChangeAvatar: !value,
-    });
-  }
-
   handleIsChangePassword(value: boolean) {
     this.setProps({
       isChangePassword: value,
@@ -264,19 +264,6 @@ class ProfileForm extends Block {
     });
     this.initValidation();
     this.resetForm();
-  }
-
-  handleIsChangeAvatar(value: boolean) {
-    Store.set('user', { formDataError: '' });
-    const popup = this.popup;
-    const changeAvatar = popup.children.ChangeAvatar;
-    changeAvatar.setProps({
-      label: 'Выбрать файл',
-      hasFile: false,
-    });
-    this.setProps({
-      isChangeAvatar: value,
-    });
   }
 
   resetForm() {
@@ -300,7 +287,7 @@ class ProfileForm extends Block {
     return `
           <form class="ProfileForm" name="ProfileForm" novalidate>
               {{{ EditableAvatar }}}
-              <span class="ProfileForm__name">{{user.first_name}}</span>
+              <span class="ProfileForm__name">Ваш ID: {{user.id}}</span>
               {{#if isChangePassword}}
                   {{{ ChangePasswordForm }}}
                    <span class="ProfileForm__error">{{ user.errorMessage }}</span>
@@ -320,9 +307,7 @@ class ProfileForm extends Block {
                       {{/if}}
                   </div>
               {{/if}}
-              {{#if isChangeAvatar}}
-                  {{{ Popup }}}
-              {{/if}}
+              {{{ Popup }}}
           </form>
         `;
   }

@@ -3,11 +3,16 @@ import store from '../framework/Store';
 
 class AuthController {
 
-  static async getUser() {
+  static async getUser(storeOption: { store: 'on' | 'off' } = { store: 'on' }) {
     try {
       const data = await AuthApi.getUser();
       const userData = JSON.parse(data.response);
-      store.set('user', userData);
+
+      if (storeOption.store !== 'off') {
+        store.set('user', userData);
+      }
+
+      return data;
     } catch (error) {
       throw error;
     }

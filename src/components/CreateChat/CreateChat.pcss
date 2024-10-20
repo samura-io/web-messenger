@@ -1,4 +1,4 @@
-.ChangeAvatar {
+.CreateChat {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -6,10 +6,6 @@
     width: 100%;
     height: 100%;
     padding-inline: 20px;
-
-    &__input {
-        display: none;
-    }
 
     &__label {
         display: block;
@@ -30,14 +26,13 @@
     }
 
     &__title {
-        margin-bottom: 40px;
+        margin-bottom: 20px;
 
         @mixin font 600, 15px, 20px;
     }
 
     &__contentWrapper {
-        max-width: 150px;
-        margin-bottom: 40px;
+        width: 100%;
     }
 
     &__error {

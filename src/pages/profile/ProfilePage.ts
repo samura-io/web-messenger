@@ -2,7 +2,7 @@ import { router } from '../../App';
 import FloatButton from '../../components/FloatButton/FloatButton';
 import ProfileForm from '../../components/ProfileForm/ProfileForm';
 import Block from '../../framework/Block';
-import withAuth from '../../utils/withAuth';
+import withoutAuth from '../../utils/withoutAuth';
 
 class ProfilePage extends Block {
   constructor() {
@@ -48,4 +48,4 @@ class ProfilePage extends Block {
   }
 }
 
-export default withAuth(ProfilePage);
+export default withoutAuth(ProfilePage);

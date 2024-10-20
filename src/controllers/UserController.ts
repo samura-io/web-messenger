@@ -28,11 +28,8 @@ class UserController {
       await UserApi.changePassword({ data: options });
       store.set('user', { loading: false });
     } catch (error) {
-      console.log(error);
       const reason = JSON.parse((error as XMLHttpRequest)?.response);
-      console.log(reason);
       if (reason.reason === 'Password is incorrect') {
-        console.log('Неверный пароль');
         store.set('user', { loading: false, errorMessage: 'Неверный пароль' });
       } else {
         store.set('user', { loading: false, errorMessage: 'Произошла ошибка, попробуйте позже' });

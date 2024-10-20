@@ -4,6 +4,7 @@ type TFloatButtonProps = {
   id: string
   icon: string
   formType?: string
+  transparent?: boolean
   onClick?: (e: Event) => void
 };
 
@@ -26,7 +27,8 @@ class FloatButton extends Block {
             <button 
                 id="{{id}}" 
                 type="{{#if formType}}{{formType}}{{else}}button{{/if}}" 
-                class="FloatButton" style="background-image: url({{icon}})">
+                class="FloatButton {{#if transparent}}FloatButton__transparent{{/if}}" 
+                style="background-image: url({{icon}})">
             </button>
         `;
   }

@@ -34,6 +34,10 @@ class Block {
 
   public children: { [key: string]: Block } = {};
 
+  private _renderCount: number = 0;
+
+  protected _initialProps: Props = {};
+
   
   constructor(propsWithChildren: Props = {}) {
     const eventBus = new EventBus();
@@ -46,6 +50,7 @@ class Block {
     this.props = this._makePropsProxy({ ...props, __id: this._id });
     this.children = children;
     this.lists = lists;
+    this._renderCount = 0;
 
     eventBus.emit(Block.EVENTS.INIT);
   }
@@ -108,6 +113,7 @@ class Block {
         this._element.addEventListener(eventName, events[eventName]);
       }
     });
+
   }
 
   removeEvents() {
@@ -226,10 +232,15 @@ class Block {
     this._element = newElement;
     this._addEvents();
     this.addAttributes();
+
+    if (this._renderCount === 0) {
+      this._initialProps = { ...this.props, ...this.children, ...this.lists };
+    }
+    this._renderCount++;
   }
   
   render(): string {
-    alert();
+
     return '';
   }
   
@@ -274,11 +285,22 @@ class Block {
   }
   
   show() {
-
+    
   }
   
   hide() {
+    
+  }
 
+  resetState() {
+    this.removeEvents();
+    const { props, children, lists } = this._getChildrenAndProps(this._initialProps);
+    this.props = this._makePropsProxy({ ...props, __id: this._id });
+    this.children = children;
+    this.lists = lists;
+
+    this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+    this.dispatchComponentDidMount();
   }
 }
 

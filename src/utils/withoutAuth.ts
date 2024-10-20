@@ -2,8 +2,9 @@ import AuthController from '../controllers/AuthController';
 import Block from '../framework/Block';
 import { router } from '../App';
 import store from '../framework/Store';
+import Loader from '../components/Loader/Loader';
 
-function withoutAuth(Component: typeof Block): new () => Block {
+function withAuth(Component: typeof Block): new () => Block {
   return class extends Component {
 
     componentDidMount() {
@@ -15,18 +16,20 @@ function withoutAuth(Component: typeof Block): new () => Block {
 
       const checkUserData = async () => {
         try {
-          const userData = await AuthController.getUser({ store: 'off' });
+          // Вызов метода получения данных пользователя
+          await AuthController.getUser();
+          
+          // Если данные успешно получены, сохраняем их в стор
+          const userData = store.getState().user;
           
           if (userData) {
             this.setProps({ user: userData });
-            router.go('/messenger');
           }
   
         } catch (error: any) {
           if (error?.status === 401) {
-            return;
+            router.go('/');
           } else {
-            console.log(error);
             router.go('/internal-error');
           }
         }
@@ -36,10 +39,16 @@ function withoutAuth(Component: typeof Block): new () => Block {
     }
 
     render() {
+      // Если пользователь не авторизован, рендер не происходит
+      if (!store.getState().user) {
+        const loader = new Loader();
+        return loader.render();
+      }
+
       // Рендерим защищённый компонент
       return super.render();
     }
   };
 }
 
-export default withoutAuth;
+export default withAuth;

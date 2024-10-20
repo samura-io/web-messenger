@@ -20,16 +20,6 @@ class ChangeAvatar extends Block {
         id: 'submit',
         disabled: true,
       }),
-      CancelButton: new Button({
-        label: 'Отмена',
-        type: 'link',
-        formType: 'button',
-        onClick: () => {
-          if (props.onFinish) {
-            props.onFinish();
-          }
-        },
-      }),
       events: {
         submit: (event: Event) => {
           this.handleSubmitChangeAvatar(event);
@@ -66,10 +56,6 @@ class ChangeAvatar extends Block {
     if (oldProps.hasFile !== newProps.hasFile) {
       this.submitButton.setProps({ disabled: !newProps.hasFile });
     }
-
-    if (oldProps.isClose !== newProps.isClose) {
-      this.setProps({ isClose: newProps.isClose });
-    }
     return true;
   }
 
@@ -85,10 +71,16 @@ class ChangeAvatar extends Block {
       if (this.props.onFinish) {
         (this.props.onFinish as () => void)();
       }
+      
+      if (this.props.onFinish) {
+        (this.props.onFinish as () => void)();
+      }
+      this.submitButton.setProps({ disabled: true, label: 'Поменять' });
     } catch (error) {
       console.error(error);
+      this.submitButton.setProps({ disabled: false, label: 'Поменять' });
     }
-    this.submitButton.setProps({ disabled: true, label: 'Поменять' });
+    
 
     target.reset();
   }
@@ -104,7 +96,6 @@ class ChangeAvatar extends Block {
             </div>
             <span class="ChangeAvatar__error">{{ user.formDataError }}</span>
             {{{SubmitButton}}}
-            {{{CancelButton}}}
         </form>   
       `;
   }

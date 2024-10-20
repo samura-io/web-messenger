@@ -64,6 +64,10 @@ class Router {
     return this.routes.find((route) => route.pathname === pathname);
   }
 
+  currentPath() {
+    return window.location.pathname;
+  }
+
   go(pathname: string) {
     this.history.pushState({}, '', pathname);
     this._onRoute(pathname);

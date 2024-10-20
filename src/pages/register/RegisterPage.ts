@@ -1,11 +1,16 @@
 import Block from '../../framework/Block';
 import Popup from '../../components/Popup/Popup';
+import RegisterForm from '../../components/RegisterForm/RegisterForm';
+import withAuth from '../../utils/withAuth';
 
 class RegisterPage extends Block {
   constructor() {
     super({
       Popup: new Popup({
-        register: true,
+        login: true,
+        open: true,
+        disableOverlay: true,
+        component: RegisterForm,
       }),
     });
   }
@@ -19,4 +24,4 @@ class RegisterPage extends Block {
   }
 }
 
-export default RegisterPage;
+export default withAuth(RegisterPage);

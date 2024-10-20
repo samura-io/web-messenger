@@ -1,77 +1,86 @@
-import Block from '../../framework/Block';
-import ChangeAvatar from '../ChangeAvatar/ChangeAvatar';
-import LoginForm from '../LoginForm/LoginForm';
-import RegisterForm from '../RegisterForm/RegisterForm';
+import Block, { Props } from '../../framework/Block';
 
 type TPopupProps = {
+  component: new (...props: Props[]) => Block,
+  open?: boolean,
   login?: boolean,
   register?: boolean,
   changeAvatar?: boolean,
-  isEnableOverlay?: boolean,
-  onClose?: (value: boolean) => void;
+  createChat?: boolean,
+  disableOverlay?: boolean,
 };
 
 class Popup extends Block {
   overlay: Element | null = null;
 
+  popupChildren: Block;
+
   constructor(props: TPopupProps) {
     super({
-      LoginForm: new LoginForm(),
-      RegisterForm: new RegisterForm(),
-      ChangeAvatar: new ChangeAvatar({
-        onFinish: () => {
-          this.handleClosePopup();
-        },
+      disableOverlay: props.disableOverlay,
+      component: new props.component({
+        onFinish: () => this.closePopup(),
+        ...props,
       }),
-      login: props.login,
-      register: props.register,
-      changeAvatar: props.changeAvatar,
-      isEnableOverlay: props.isEnableOverlay,
-      onClose: props.onClose,
+      open: props.open, 
+      events: {
+        click: (e: Event) => {
+          this.handleClosePopup(e);
+        },
+      },
     });
+
+    this.popupChildren = this.children.component;
+    this.popupChildren.props.onClosePopup = () => this.handleClosePopupWithoutOverlay();
   }
-
-  componentDidMount(): void | (() => void) {
-    this.overlay = this.createRef('PopupOverlay');
-    
-    if (this.overlay) {
-      this.overlay.addEventListener('click', this.handleClosePopup );
-    }
-
-    return () => {
-      if (this.overlay) {
-        this.overlay.removeEventListener('click', this.handleClosePopup);
-      }
-    };
-  }
-
-  handleClosePopup = (e?: Event) => {
-    if (this.props.onClose && e?.target === e?.currentTarget) {
-      (this.props.onClose as (value: boolean) => void)(true);
-    }
-    if (!e) {
-      (this.props.onClose as (value: boolean) => void)(true);
+  
+  handleClosePopup = (e: Event) => {
+    if (e.target === e.currentTarget && !this.props.disableOverlay) {
+      this.closePopup();
     }
   };
+
+  handleClosePopupWithoutOverlay = () => {
+    this.closePopup();
+  };
+
+  closePopup = () => {
+    this.setProps({
+      open: false,
+    });
+
+    this.clearFormsAndChildren();
+  };
+
+  
+
+  clearFormsAndChildren() {
+    const popupElement = document.querySelector('.Popup');
+    if (popupElement) {
+      const forms = popupElement.querySelectorAll('form');
+      forms.forEach((form) => form.reset());
+    }
+
+    this.popupChildren.resetState();
+    Object.values(this.popupChildren.children).forEach((child) => {
+      child.resetState();
+    });
+  }
   
   render() {
     return `
             <div a
-                class="Popup__overlay
-                {{#if isEnableOverlay}} Popup__overlay_isEnableOverlay {{/if}}"
-                id="PopupOverlay"
+              class="Popup__overlay
+                {{#if open}} Popup__overlay_isEnableOverlay {{/if}}
+                {{#if disableOverlay}} Popup__overlay_hideOverlay {{/if}}"
+              id="PopupOverlay"
+              style="background-color: {{overlayColor}};"
             >
-                <div class="Popup Popup_open">
-                  {{#if login}}
-                      {{{ LoginForm }}}
-                  {{/if}}
-                  {{#if register}}
-                      {{{ RegisterForm }}}
-                  {{/if}}
-                  {{#if changeAvatar}}
-                      {{{ ChangeAvatar }}}
-                  {{/if}}
-                </div>
+              <div class="Popup
+                {{#if open}} Popup_open{{/if}}"
+              >
+                {{{component}}}
+              </div>
             </div>      
       `;
   }
