@@ -1,25 +1,4 @@
-# Redirects from what the browser requests to what we serve
 [[redirects]]
-  from = "/"
-  to = "/"
-  status = 200
-
-[[redirects]]
-from = "/settings"
-to = "/settings"
-status = 200
-
-[[redirects]]
-from = "/messenger"
-to = "/messenger"
-status = 200
-
-[[redirects]]
-from = "/sign-up"
-to = "/sign-up"
-status = 200
-
-[[redirects]]
-from = "/internal-error"
-to = "/internal-error"
-status = 200
+	from = "*"
+	to = "/"
+	status = 200
