@@ -1,7 +1,7 @@
 import Block from '../../framework/Block';
 import Popup from '../../components/Popup/Popup';
 import RegisterForm from '../../components/RegisterForm/RegisterForm';
-import withAuth from '../../utils/withAuth';
+// import withAuth from '../../utils/withAuth';
 
 class RegisterPage extends Block {
   constructor() {
