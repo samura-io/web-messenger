@@ -24,4 +24,5 @@ class RegisterPage extends Block {
   }
 }
 
-export default withAuth(RegisterPage);
+// export default withAuth(RegisterPage);
+export default RegisterPage;
