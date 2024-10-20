@@ -4,6 +4,7 @@
 [FIGMA](https://www.figma.com/design/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=1-444&node-type=FRAME&t=Of5cXdyiNZN9ttmo-0)
 
 **Ссылка на проект:**
+
 [NETLIFY](https://symphonious-cuchufli-49a666.netlify.app/)
 
 ## Технические особенности
