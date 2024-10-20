@@ -20,4 +20,4 @@ export default class App {
       .use('/internal-error', InternalErorPage)
       .start();
   }
-}
+} 
