@@ -33,7 +33,7 @@ class ChatUsers extends Block {
         type: 'number',
         name: 'title',
         value: '',
-        id: 'createChat',
+        id: 'addUsers',
         onChange: (e: InputEvent) => {
           this.handleInputChange(e);
         },
@@ -59,7 +59,7 @@ class ChatUsers extends Block {
 
   async updateChatList(chatId: number) {
     try {
-      const userList: TUser[] = await ChatsController.getUserList(chatId) as TUser[];
+      const userList: TUser[] = await ChatsController.getUserList(chatId);
       this.setProps({
         UserList:  userList.map((user, index) => {
           return `
@@ -126,7 +126,7 @@ class ChatUsers extends Block {
       label: 'Добавляем...',
     });
 
-    const input = document.querySelector('.Input__input') as HTMLInputElement;
+    const input = document.querySelector('#addUsers') as HTMLInputElement;
     const fields = { users: [input?.value], chatId: this.props.chatId };
     
     try {

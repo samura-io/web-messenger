@@ -2,7 +2,6 @@ import Chat, { Chat as ChatInterface } from '../../components/Chat/Chat';
 import SearchableInput from '../../components/SearchableInput/SearchableInput';
 import NavigationTo from '../../components/NavigationTo/NavigationTo';
 import Correspondence from '../../components/Correspondence/Correspondence';
-import { chats, searchableChats } from '../../data/chats';
 import Block from '../../framework/Block';
 import { router } from '../../App';
 import withoutAuth from '../../utils/withoutAuth';
@@ -10,7 +9,7 @@ import connect from '../../utils/connect';
 import Button from '../../components/Button/Button';
 import Popup from '../../components/Popup/Popup';
 import CreateChat from '../../components/CreateChat/CreateChat';
-import ChatsController, { defaultChat, TChatTokenResponse } from '../../controllers/ChatsController';
+import ChatsController, { defaultChat } from '../../controllers/ChatsController';
 
 export type TMessage = {
   time: string;
@@ -76,9 +75,9 @@ class MainPage extends Block {
         },
       }),
       ChatComponent: new Chat({
-        chats: chats,
+        chats: [],
         searchable: false,
-        searchableChats: searchableChats,
+        searchableChats: [],
         onSelectChat: (chat: number, chatInfo: TChat) => {
           this.handleSelectChat(chat, chatInfo);
         },
@@ -141,7 +140,7 @@ class MainPage extends Block {
       loading: true,
     });
     try {
-      const res = await ChatsController.getWebSocketsToken({ data: {} }, chatId) as TChatTokenResponse;
+      const res = await ChatsController.getWebSocketsToken({ data: {} }, chatId);
 
       const newCorrespondenceProps = {
         chatId,

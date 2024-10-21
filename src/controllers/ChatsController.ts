@@ -56,7 +56,7 @@ class ChatsController {
       });
       Store.set('chats', sortedChats);
     } catch (error) {
-      return error;
+      throw error;
     }
   }
   
@@ -64,7 +64,7 @@ class ChatsController {
     try {
       await ChatApi.createChat(request);
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 
@@ -74,7 +74,7 @@ class ChatsController {
       const userList: TUser[] = JSON.parse(data.response);
       return userList;
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 
@@ -82,7 +82,7 @@ class ChatsController {
     try {
       await ChatApi.addUserToChat(request);
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 
@@ -90,7 +90,7 @@ class ChatsController {
     try {
       await ChatApi.removeUserFromChat(request);
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 
@@ -100,7 +100,7 @@ class ChatsController {
       const res: TChatTokenResponse = JSON.parse(data.response);
       return res;
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 

@@ -108,38 +108,44 @@ class Correspondence extends Block {
   }
 
   updateMessageList(e: MessageEvent) {
-    const message = JSON.parse(e.data);
+    try {
+      const message = JSON.parse(e.data);
 
-    if (message.type === 'pong') {
-      return; 
-    }
-
-    if (message.type === 'user connected') {
-      return; 
-    }
-    
-    const newMessageList = (this.props.messageList as TMessage[])?.concat(message)
-      .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
-    this.setProps({
-      messageList: newMessageList,
-      loading: false,
-    });
       
-    this.setProps({
-      MessageList: 
+      if (message.type === 'pong') {
+        return; 
+      }
+
+      if (message.type === 'user connected') {
+        return; 
+      }
+    
+      const newMessageList = (this.props.messageList as TMessage[])?.concat(message)
+        .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
+      this.setProps({
+        messageList: newMessageList,
+        loading: false,
+      });
+      
+      this.setProps({
+        MessageList: 
       (this.props.messageList as TMessage[])?.map((element) => {
         return new Message({
           message: element,
         });
       }),
-    });
+      });
 
-    const lastMessage = document.querySelector('.message:first-child') ;
-    if (lastMessage) {
-      lastMessage.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      const lastMessage = document.querySelector('.message:first-child') ;
+      if (lastMessage) {
+        lastMessage.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }
+
+      ChatsController.getChats({});
+    } catch (error) {
+      return console.error(error);
     }
 
-    ChatsController.getChats({});
   }
 
   handleSubmit(event: Event) {

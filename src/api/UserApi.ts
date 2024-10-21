@@ -1,10 +1,11 @@
 import { TOptopns } from '../utils/HTTPTransport';
+import { BASE_URL } from '../variables';
 import BaseApi from './BaseApi';
 
 class UserAPI extends BaseApi {
 
   constructor() {
-    super('https://ya-praktikum.tech/api/v2/user/');
+    super(`${BASE_URL}/user/`);
   }
     
   changeProfile(request: TOptopns) {

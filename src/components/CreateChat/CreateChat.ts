@@ -57,7 +57,8 @@ class CreateChat extends Block {
       label: 'Создание...',
     });
 
-    const input = document.querySelector('.Input__input') as HTMLInputElement;
+    const input = document.querySelector('#createChat') as HTMLInputElement;
+    console.log(e.target);
     const fields = { title: input?.value };
     
     try {

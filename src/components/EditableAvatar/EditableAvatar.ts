@@ -1,4 +1,5 @@
 import Block from '../../framework/Block';
+import { BASE_URL } from '../../variables';
 
 type TEditableAvatarProps = {
   avatar?: string;
@@ -21,7 +22,7 @@ class EditableAvatar extends Block {
   
   render() {
     return `
-      <div class="EditableAvatar" style="background-image: url('https://ya-praktikum.tech/api/v2/resources{{avatar}}');"></div>
+      <div class="EditableAvatar" style="background-image: url('${BASE_URL}/resources{{avatar}}');"></div>
     `;
   }
 }

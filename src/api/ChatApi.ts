@@ -1,10 +1,11 @@
 import { TOptopns } from '../utils/HTTPTransport';
+import { BASE_URL } from '../variables';
 import BaseApi from './BaseApi';
 
 class ChatApi extends BaseApi {
 
   constructor() {
-    super('https://ya-praktikum.tech/api/v2/chats/');
+    super(`${BASE_URL}/chats/`);
   }
     
   getChats(request: TOptopns) {
