@@ -5,7 +5,7 @@
 
 **Ссылка на проект:**
 
-[NETLIFY](https://symphonious-cuchufli-49a666.netlify.app/messenger)
+[NETLIFY](https://symphonious-cuchufli-49a666.netlify.app/)
 
 ## Технические особенности
 
