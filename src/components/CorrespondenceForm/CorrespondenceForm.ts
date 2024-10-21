@@ -3,15 +3,15 @@ import ClassicInput from '../ClassicInput/ClassicInput';
 import FileInput from '../FileInput/FileInput';
 import FloatButton from '../FloatButton/FloatButton';
 
-type TСorrespondenceFormProps = {
+type TCorrespondenceFormProps = {
   onSubmit?: (event: Event) => void;
   reset?: boolean;
 };
 
-class СorrespondenceForm extends Block {
+class CorrespondenceForm extends Block {
   classicInput: ClassicInput;
 
-  constructor(props: TСorrespondenceFormProps) {
+  constructor(props: TCorrespondenceFormProps) {
     super({
       ClassicInput: new ClassicInput({
         name: 'message',
@@ -113,4 +113,4 @@ class СorrespondenceForm extends Block {
   }
 }
 
-export default СorrespondenceForm;
+export default CorrespondenceForm;

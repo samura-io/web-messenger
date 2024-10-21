@@ -5,20 +5,39 @@ type TInputProps = {
   type: string,
   name: string,
   value: string,
+  id?: string,
   placeholder?: string,
   pattern?: string,
   required?: boolean,
   disabled?: boolean,
   minLength?: number,
   maxLength?: number,
-  onlyStandartValidate?: boolean
+  onlyStandartValidate?: boolean,
+  onChange?: (e: InputEvent) => void
 };
 
 class Input extends Block {
   constructor(props: TInputProps) {
     super({
+      id: props.id,
       ...props,
     });
+  }
+
+  componentDidMount(): void | (() => void) {
+
+    if (this.props.id) {
+      const InputRef = this.createRef(this.props.id as string);
+      InputRef?.addEventListener('input', this.props.onChange as EventListener);
+    }
+    
+    
+    return () => {
+      if (this.props.id) {
+        const InputRef = this.createRef(this.props.id as string);
+        InputRef?.removeEventListener('input', this.props.onChange as EventListener);
+      }
+    };
   }
   
   render() {
@@ -30,6 +49,7 @@ class Input extends Block {
                     type="{{type}}" 
                     name="{{name}}" 
                     {{#if value}}value="{{value}}"{{/if}}
+                    {{#if id}}id="{{id}}"{{/if}}
                     {{#if placeholder}}placeholder="{{placeholder}}"{{/if}}
                     {{#if pattern}}pattern="{{pattern}}"{{/if}} 
                     {{#if required}}required{{/if}}

@@ -1,6 +1,7 @@
 import EventBus from './EventBus';
 import { v4 as makeUUID } from 'uuid';
 import Handlebars from 'handlebars';
+import cloneDeep from '../utils/cloneDeep';
 
 export type Props = {
   [key: string]: unknown;
@@ -18,19 +19,24 @@ class Block {
     FLOW_CDM: 'flow:component-did-mount',
     FLOW_CDU: 'flow:component-did-update',
     FLOW_RENDER: 'flow:render',
+    FLOW_UNMOUNT: 'flow:component-will-unmount',
   };
   
   private _element: HTMLElement | null = null;
 
   private eventBus: () => EventBus;
 
-  private lists: { [key: string]: Block[] } = {};
+  public lists: { [key: string]: Block[] } = {};
   
   protected _id: string | null = null;
 
-  protected props: Props;
+  public props: Props;
 
-  protected children: { [key: string]: Block } = {};
+  public children: { [key: string]: Block } = {};
+
+  private _renderCount: number = 0;
+
+  protected _initialProps: Props = {};
 
   
   constructor(propsWithChildren: Props = {}) {
@@ -44,6 +50,7 @@ class Block {
     this.props = this._makePropsProxy({ ...props, __id: this._id });
     this.children = children;
     this.lists = lists;
+    this._renderCount = 0;
 
     eventBus.emit(Block.EVENTS.INIT);
   }
@@ -53,6 +60,7 @@ class Block {
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+    eventBus.on(Block.EVENTS.FLOW_UNMOUNT, this._componentWillUnmount.bind(this));
   }
   
   init() {  
@@ -84,7 +92,10 @@ class Block {
     return { props, children, lists };
   }
   
-  componentDidMount() {}
+  componentDidMount(): void | (() => void) {
+    return () => {
+    };
+  }
   
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
@@ -102,9 +113,12 @@ class Block {
         this._element.addEventListener(eventName, events[eventName]);
       }
     });
+
   }
 
   removeEvents() {
+    this.eventBus().emit(Block.EVENTS.FLOW_UNMOUNT);
+
     const { events } = this.props;
     if (!events) {
       return;
@@ -115,6 +129,13 @@ class Block {
         this._element.removeEventListener(eventName, events[eventName]);
       }
     });
+  }
+
+  _componentWillUnmount() {
+    const fallback = this.componentDidMount();
+    if (typeof fallback === 'function') {
+      fallback();
+    }
   }
   
   _componentDidUpdate(oldProps: Props, newProps: Props) {
@@ -159,6 +180,8 @@ class Block {
     Object.assign(this.props, props);
     Object.assign(this.lists, lists);
     Object.assign(this.children, children);
+
+    this._render();
   };
   
   get element() {
@@ -209,9 +232,15 @@ class Block {
     this._element = newElement;
     this._addEvents();
     this.addAttributes();
+
+    if (this._renderCount === 0) {
+      this._initialProps = { ...this.props, ...this.children, ...this.lists };
+    }
+    this._renderCount++;
   }
   
   render(): string {
+
     return '';
   }
   
@@ -233,10 +262,10 @@ class Block {
         return typeof value === 'function' ? value.bind(target) : value;
       },
       set(target, prop: string, value) {
-        const oldProps = { ...target };
-        target[prop] = value;
-        const newProps = { ...target };
-
+        const oldProps = cloneDeep(target); 
+        target[prop] = cloneDeep(value);
+        const newProps = cloneDeep(target);
+  
         self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, newProps);
         return true;
       },
@@ -246,17 +275,32 @@ class Block {
     });
   }
 
+  createRef(elementId: string) {
+    return this._element?.querySelector(`#${elementId}`) || this._element;
+  }
+
   _createDocumentElement(tagName: string) {
     const element = document.createElement(tagName);
     return element;
   }
   
   show() {
-    this.getContent().style.display = 'block';
+    
   }
   
   hide() {
-    this.getContent().style.display = 'none';
+    
+  }
+
+  resetState() {
+    this.removeEvents();
+    const { props, children, lists } = this._getChildrenAndProps(this._initialProps);
+    this.props = this._makePropsProxy({ ...props, __id: this._id });
+    this.children = children;
+    this.lists = lists;
+
+    this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+    this.dispatchComponentDidMount();
   }
 }
 

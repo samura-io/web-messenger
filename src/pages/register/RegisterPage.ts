@@ -1,26 +1,18 @@
 import Block from '../../framework/Block';
 import Popup from '../../components/Popup/Popup';
-import Validation from '../../utils/validation';
+import RegisterForm from '../../components/RegisterForm/RegisterForm';
+// import withAuth from '../../utils/withAuth';
 
 class RegisterPage extends Block {
   constructor() {
     super({
       Popup: new Popup({
-        register: true,
+        login: true,
+        open: true,
+        disableOverlay: true,
+        component: RegisterForm,
       }),
     });
-  }
-
-  componentDidMount() {
-    const validation = new Validation('RegisterForm');
-    const form = validation.form;
-    form?.addEventListener('validationSuccess', this.handleValidSubmit.bind(this) as EventListener);
-      
-  }
-
-  handleValidSubmit(event: CustomEvent) {
-    const fieldsData = event.detail.fields;
-    console.log(`Отправляем данные регистрации: ${JSON.stringify(fieldsData)}`);
   }
   
   render() {
@@ -32,4 +24,5 @@ class RegisterPage extends Block {
   }
 }
 
+// export default withAuth(RegisterPage);
 export default RegisterPage;
