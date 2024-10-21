@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "start": "tsc && vite build && node server.cjs",
+    "start": "tsc && vite build && node",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint **/*.{js,ts}",
