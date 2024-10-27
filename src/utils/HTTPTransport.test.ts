@@ -6,7 +6,7 @@ import { createSandbox, SinonStub } from 'sinon';
 describe('HTTPTransport', () => {
   use(SinonChai);
   const sandbox = createSandbox();
-  let http: string;
+  let http: HTTPTransport;
   let request: SinonStub;
 
   beforeEach(() => {
