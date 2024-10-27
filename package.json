@@ -14,7 +14,8 @@
     "lint-pcss:fix": "stylelint **/*.pcss --fix",
     "lint:fix": "eslint --fix **/*.{js,ts}",
     "prebuild": "tsc --noEmit",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "npx husky install && cp .husky/pre-commit .git/hooks/pre-commit"
   },
   "husky": {
     "hooks": {
