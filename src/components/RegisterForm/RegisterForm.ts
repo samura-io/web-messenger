@@ -1,8 +1,14 @@
+import AuthApi from '../../api/AuthApi';
+import { ApiError } from '../../api/BaseApi';
+import { router } from '../../App';
 import Block from '../../framework/Block';
+import Validation from '../../utils/validation';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
 
 class RegisterForm extends Block {
+  submitButton: Button;
+
   constructor() {
     super({
       InputList: [
@@ -70,21 +76,79 @@ class RegisterForm extends Block {
           maxLength: 40,
         }),
       ],
-      ButtonList: [
-        new Button({
-          label: 'Зарегистрироваться',
-          type: 'primary',
-          formType: 'submit',
-          id: 'goToMain',
-        }),
-        new Button({
-          label: 'Войти',
-          type: 'link',
-          formType: 'button',
-          id: 'goToLogin',
-        }),
-      ],
+      SubmitButton: new Button({
+        label: 'Зарегистрироваться',
+        type: 'primary',
+        formType: 'submit',
+        id: 'goToMain',
+      }),
+      ToRegisterButton: new Button({
+        label: 'Войти',
+        type: 'link',
+        formType: 'button',
+        id: 'goToLogin',
+        onClick: () => {
+          router.go('/');
+        },
+      }),
+      errorMessage: '',
+      loading: false,
     });
+
+    this.submitButton = this.children.SubmitButton;
+  }
+
+  componentDidMount(): void {
+    this.initValidation();
+  }
+
+  initValidation() {
+    const validation = new Validation('RegisterForm');
+    const form = validation.form;
+    form?.addEventListener('validationSuccess', this.handleValidSubmit.bind(this) as unknown as EventListener);
+  }
+
+  async handleValidSubmit(event: CustomEvent) {
+
+    this.setProps({
+      loading: true,
+      errorMessage: '',
+    });
+
+    this.submitButton.setProps({
+      disabled: true,
+      label: 'Загрузка...',
+    });
+
+    const fieldsData = event.detail.fields;
+    
+    try {
+      await AuthApi.signUp({
+        data: fieldsData,
+      });
+      
+      router.go('/messenger');
+    } catch (e) {
+      let errorMessage = '';
+
+      const error = e as ApiError;
+      if (error.status === 409) {
+        errorMessage = 'Пользователь с таким логином или почтой уже существует';
+      } else {
+        errorMessage = 'Произошла ошибка, попробуйте позже';
+      }
+
+      this.setProps({
+        errorMessage,
+      });
+
+      this.submitButton.setProps({
+        disabled: false,
+        label: 'Зарегистрироваться',
+      });
+
+      this.initValidation();
+    }
   }
   
   render() {
@@ -94,7 +158,11 @@ class RegisterForm extends Block {
                 <span class="RegisterForm__title">Регистрация</span>
                     {{{ InputList }}}
                 <div class="RegisterForm__footer">
-                    {{{ ButtonList }}}
+                    {{#if errorMessage}}
+                      <span class="LoginForm__error">{{errorMessage}}</span>
+                    {{/if}}
+                    {{{ SubmitButton }}}
+                    {{{ ToRegisterButton }}}
                 </div>
             </div>
         </form>   

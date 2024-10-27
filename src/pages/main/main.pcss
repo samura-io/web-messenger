@@ -17,7 +17,6 @@
         display: flex;
         flex-direction: column;
         padding-top: 21px;
-        padding-inline: 10px;
 
         @mixin transition-all;
 
@@ -67,5 +66,9 @@
         @media (width <= 520px) {
             display: none;
         }
+    }
+
+    &__topContainer {
+        padding-inline: 10px;
     }
 }
