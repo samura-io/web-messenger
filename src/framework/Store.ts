@@ -1,5 +1,5 @@
-import set from '../utils/set';
-import EventBus from './EventBus';
+import set from '../utils/set.ts';
+import EventBus from './EventBus.ts';
 
 export enum StoreEvents {
   Updated = 'updated',
@@ -20,6 +20,10 @@ class Store extends EventBus {
     set(this.state, key, value);
 
     this.emit(StoreEvents.Updated);
+  }
+
+  public reset() {
+    this.state = {};
   }
 }
 

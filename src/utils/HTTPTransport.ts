@@ -14,7 +14,7 @@ export type TOptopns = {
 };
   
 
-function queryStringify(data: TOptopns['data'] | FormData) {
+export function queryStringify(data: TOptopns['data'] | FormData) {
   if (typeof data !== 'object') {
     throw new Error('Data must be object');
   }
