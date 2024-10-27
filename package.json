@@ -16,6 +16,11 @@
     "prebuild": "tsc --noEmit",
     "prepare": "husky"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run test && npm run prebuild && npm run lint && npm run lint-pcss"
+    }
+  },
   "devDependencies": {
     "@types/chai": "^5.0.0",
     "@types/jsdom": "^21.1.7",
