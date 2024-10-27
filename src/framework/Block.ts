@@ -1,7 +1,7 @@
-import EventBus from './EventBus';
+import EventBus from './EventBus.ts';
 import { v4 as makeUUID } from 'uuid';
 import Handlebars from 'handlebars';
-import cloneDeep from '../utils/cloneDeep';
+import cloneDeep from '../utils/cloneDeep.ts';
 
 export type Props = {
   [key: string]: unknown;
